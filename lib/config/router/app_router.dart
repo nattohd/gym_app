@@ -1,5 +1,3 @@
-import 'package:gym_app/src/screens/qr/qrgenerate_screen.dart';
-import 'package:gym_app/src/screens/qr/scanqr_screen.dart';
 import 'package:gym_app/src/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 

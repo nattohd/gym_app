@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:gym_app/src/screens/reservas/widgets/body_calendar.dart';
 import 'package:gym_app/src/screens/reservas/widgets/header_calendar.dart';
 
@@ -8,7 +8,7 @@ class ReservasScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    // final colors = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reserva tu Hora'),
