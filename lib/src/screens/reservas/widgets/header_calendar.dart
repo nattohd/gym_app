@@ -15,7 +15,7 @@ class HeaderCalendar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: days.map((day) {
           return Container(
-            height: size.width * 0.24,
+            height: size.width * 0.245,
             width: size.width * 0.85 / 5,
             padding: const EdgeInsets.all(15.0),
             child: Column(

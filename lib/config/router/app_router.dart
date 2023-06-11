@@ -1,5 +1,6 @@
 import 'package:gym_app/src/screens/qr/qrgenerate_screen.dart';
 import 'package:gym_app/src/screens/qr/scanqr_screen.dart';
+import 'package:gym_app/src/screens/reservas/add_reservation_screen.dart';
 import 'package:gym_app/src/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,6 +23,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/reserve',
       builder: (context, state) => const ReservasScreen(),
+    ),
+    GoRoute(
+      path: '/reserve/add',
+      builder: (context, state) => const AddReservationScreen(),
     ),
     GoRoute(
       path: '/qrgenerate',

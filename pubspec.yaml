@@ -37,6 +37,7 @@ dependencies:
   go_router: ^8.0.1
   material_design_icons_flutter: ^6.0.7096
   simple_animations: ^4.0.1
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:
