@@ -7,9 +7,7 @@ class HeaderCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final textStyle = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
-    print(textStyle.headlineSmall);
     return Container(
       width: size.width,
       margin: EdgeInsets.only(left: size.width * 0.15),
@@ -17,7 +15,7 @@ class HeaderCalendar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: days.map((day) {
           return Container(
-            height: size.width * 0.19,
+            height: size.width * 0.24,
             width: size.width * 0.85 / 5,
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -31,7 +29,7 @@ class HeaderCalendar extends StatelessWidget {
                           : FontWeight.normal),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 3,
                 ),
                 Stack(
                   alignment: Alignment.center,

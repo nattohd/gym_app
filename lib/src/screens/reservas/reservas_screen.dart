@@ -19,8 +19,8 @@ class ReservasScreen extends StatelessWidget {
           onPressed: () => context.pop(),
           child: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
-        body: Column(
-          children: const [
+        body: const Column(
+          children: [
             HeaderCalendar(),
             Expanded(
               child: BodyCalendar(),

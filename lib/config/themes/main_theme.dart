@@ -26,9 +26,9 @@ class MainTheme {
           centerTitle: false,
         ),
         textTheme: TextTheme(
-          bodyLarge: TextStyle(color: darkMode ? Colors.black : Colors.white),
+          bodyLarge: TextStyle(color: darkMode ? Colors.white : Colors.black),
           headlineLarge:
-              TextStyle(color: darkMode ? Colors.black : Colors.white),
+              TextStyle(color: darkMode ? Colors.white : Colors.black),
         ),
       );
 }

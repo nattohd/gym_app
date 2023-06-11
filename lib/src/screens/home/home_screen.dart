@@ -62,7 +62,10 @@ class HomeScreen extends StatelessWidget {
 
           return ListTile(
             splashColor: colors.primary.withOpacity(0.35),
-            title: Text(item.title),
+            title: Text(
+              item.title,
+              style: textStyles.bodyLarge,
+            ),
             subtitle: Text(item.subTitle),
             trailing: Icon(
               Icons.arrow_forward_ios_outlined,
