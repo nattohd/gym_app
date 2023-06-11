@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gym_app/src/screens/user/widgets/form.dart';
 import 'package:gym_app/src/screens/user/widgets/header_login.dart';
 
@@ -50,9 +51,7 @@ class _ButtonInitLoginState extends State<_ButtonInitLogin> {
               ),
             ),
             onPressed: () {
-              if (widget.formKey.currentState!.validate()) {
-                setState(() {});
-              }
+              if (widget.formKey.currentState!.validate()) context.push('/');
             },
             label: const Icon(Icons.keyboard_arrow_right_outlined),
             icon: const Text('Ingresar'),

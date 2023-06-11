@@ -41,11 +41,17 @@ class HeaderLogin extends StatelessWidget {
                 children: [
                   Text(
                     'Gimnasio USM JMC',
-                    style: textStyle.headlineLarge,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: textStyle.headlineLarge?.fontSize,
+                    ),
                   ),
                   Text(
                     'Ingreso de sesión.',
-                    style: textStyle.bodyLarge,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: textStyle.bodyLarge?.fontSize,
+                    ),
                   ),
                 ],
               ),
