@@ -33,4 +33,10 @@ const List<MenuItem> menuItems = [
     link: '/scan',
     icon: Icons.qr_code_scanner_rounded,
   ),
+  MenuItem(
+    title: 'Mis horas',
+    subTitle: 'Mostrar mis horas generadas',
+    link: '/horas',
+    icon: Icons.calendar_today,
+  ),
 ];

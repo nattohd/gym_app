@@ -26,12 +26,12 @@ final appRouter = GoRouter(
       builder: (context, state) => const AddReservationScreen(),
     ),
     GoRoute(
-      path: '/qrgenerate',
-      builder: (context, state) => const QrGenerateScreen(),
-    ),
-    GoRoute(
       path: '/scan',
       builder: (context, state) => const ScanQRScreen(),
+    ),
+    GoRoute(
+      path: '/horas',
+      builder: (context, state) => const QrGenerateScreen(),
     ),
   ],
 );
