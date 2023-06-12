@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gym_app/src/screens/reservas/widgets/dialog/dialog_reservation_screen.dart';
 
 class GrillaCalendar extends StatelessWidget {
