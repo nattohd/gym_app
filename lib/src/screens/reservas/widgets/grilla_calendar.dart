@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gym_app/src/screens/reservas/widgets/dialog/dialog_reservation_screen.dart';
 
 class GrillaCalendar extends StatelessWidget {
   final double heightGrilla;
@@ -20,7 +22,15 @@ class GrillaCalendar extends StatelessWidget {
             return InkWell(
               splashColor: colors.primary.withOpacity(.1),
               hoverColor: colors.primary.withOpacity(.1),
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const DialogReservationScreen();
+                  },
+                );
+                ;
+              },
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(

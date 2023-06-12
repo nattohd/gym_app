@@ -4,4 +4,3 @@ export 'package:gym_app/src/screens/home/home_screen.dart';
 export 'package:gym_app/src/screens/reservas/reservas_screen.dart';
 export 'package:gym_app/src/screens/qr/qrgenerate_screen.dart';
 export 'package:gym_app/src/screens/qr/scanqr_screen.dart';
-export 'package:gym_app/src/screens/reservas/add_reservation_screen.dart';
