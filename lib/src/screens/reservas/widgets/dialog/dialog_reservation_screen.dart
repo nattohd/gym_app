@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class DialogReservationScreen extends StatelessWidget {
   final int bloque, dia;
@@ -9,7 +10,7 @@ class DialogReservationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String _processDay(int dia) {
+    String processDay(int dia) {
       String diaFinal = '';
 
       switch (dia) {
@@ -35,7 +36,9 @@ class DialogReservationScreen extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
     final int bloqueFinal = bloque + 1;
-    String diaReserva = _processDay(dia);
+    String diaReserva = processDay(dia);
+    DateTime fechaActual = DateTime.now();
+    String fechaFormateada = DateFormat('dd/MM/yyyy').format(fechaActual);
 
     return AlertDialog(
       title: const Text(
@@ -43,10 +46,54 @@ class DialogReservationScreen extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
-      content: Text(
-        'Estimado alumno NOMBRE APELLIDO, ¿Se encuentra SEGURO que desea RESERVAR el BLOQUE N° $bloqueFinal para el dia $diaReserva?',
-        style: const TextStyle(fontSize: 16),
-        textAlign: TextAlign.justify,
+      content: SingleChildScrollView(
+        child: IntrinsicWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Estimad@ alumn@ NOMBRE APELLIDO, ¿Se encuentra SEGURO que desea realizar esta RESERVA ?',
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.justify,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  '1. BLOQUE N° $bloqueFinal',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  '2. Dia: $diaReserva 11/11',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  '3. Hora Ingreso: ${fechaFormateada.toString()} AM',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  '4. Hora Salida: ${fechaFormateada.toString()} AM',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  '5. Fecha Actual: ${fechaFormateada.toString()}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       actions: [
         TextButton(
