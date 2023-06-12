@@ -28,7 +28,6 @@ class GrillaCalendar extends StatelessWidget {
                     return const DialogReservationScreen();
                   },
                 );
-                ;
               },
               child: Container(
                 decoration: BoxDecoration(
