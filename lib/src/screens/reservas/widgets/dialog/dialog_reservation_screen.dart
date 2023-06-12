@@ -2,12 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DialogReservationScreen extends StatelessWidget {
-  const DialogReservationScreen({super.key});
+  final int bloque, dia;
+
+  const DialogReservationScreen(
+      {super.key, required this.bloque, required this.dia});
 
   @override
   Widget build(BuildContext context) {
+    String _processDay(int dia) {
+      String diaFinal = '';
+
+      switch (dia) {
+        case 0:
+          diaFinal = 'Lunes';
+          break;
+        case 1:
+          diaFinal = 'Martes';
+          break;
+        case 2:
+          diaFinal = 'Miercoles';
+          break;
+        case 3:
+          diaFinal = 'Jueves';
+          break;
+        case 4:
+          diaFinal = 'Viernes';
+          break;
+      }
+      return diaFinal;
+    }
+
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
+    final int bloqueFinal = bloque + 1;
+    String diaReserva = _processDay(dia);
 
     return AlertDialog(
       title: const Text(
@@ -15,9 +43,9 @@ class DialogReservationScreen extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
-      content: const Text(
-        'Estimado alumno NOMBRE APELLIDO, ¿Se encuentra SEGURO que desea RESERVAR el BLOQUE N°?',
-        style: TextStyle(fontSize: 16),
+      content: Text(
+        'Estimado alumno NOMBRE APELLIDO, ¿Se encuentra SEGURO que desea RESERVAR el BLOQUE N° $bloqueFinal para el dia $diaReserva?',
+        style: const TextStyle(fontSize: 16),
         textAlign: TextAlign.justify,
       ),
       actions: [

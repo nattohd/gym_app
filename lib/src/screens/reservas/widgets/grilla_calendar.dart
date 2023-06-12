@@ -14,7 +14,7 @@ class GrillaCalendar extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Column(
-      children: columnas.map((i) {
+      children: columnas.map((j) {
         List<int> filas = List<int>.generate(5, (index) => index);
         return Row(
           children: filas.map((i) {
@@ -25,7 +25,7 @@ class GrillaCalendar extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const DialogReservationScreen();
+                    return DialogReservationScreen(bloque: j, dia: i);
                   },
                 );
               },
