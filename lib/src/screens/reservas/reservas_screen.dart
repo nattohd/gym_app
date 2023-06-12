@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
 import 'package:gym_app/src/screens/reservas/widgets/body_calendar.dart';
 import 'package:gym_app/src/screens/reservas/widgets/header_calendar.dart';
 
@@ -21,10 +20,6 @@ class ReservasScreen extends StatelessWidget {
           )
         ],
       ),
-
-      // onPressed: () {
-      //   context.push('/reserve/add');
-      // },
     );
   }
 }
