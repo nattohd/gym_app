@@ -32,7 +32,7 @@ class ValidatorsForm {
       errors.remove(PasswordErrors.isLeastLength);
     }
     RegExp regexCaractSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
-    if (!regexCaractSpecial.hasMatch(value)) {
+    if (regexCaractSpecial.hasMatch(value)) {
       errors.remove(PasswordErrors.isSpecialCaracters);
     }
     return errors;
