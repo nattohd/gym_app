@@ -61,6 +61,7 @@ class HeaderCalendar extends StatelessWidget {
 
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
+    initializeDateFormatting('es', null);
     DateTime fechaActual = DateTime.now();
     String diaFix = DateFormat('dd', 'es').format(fechaActual);
 
