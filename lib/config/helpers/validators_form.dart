@@ -4,10 +4,17 @@ class ValidatorsForm {
         .hasMatch(value);
   }
 
-  static bool isCorrectFormatPassword(String value) {
-    // Añade las validaciones de contraseña aqui
-
-    // Pregunta si la contraseña esta vacia ⬇️
-    return value.isEmpty;
+  static dynamic isCorrectFormatPassword(String value) {
+    if (value.isEmpty) {
+      return 'Debe ingresar una contraseña';
+    }
+    if (value.length < 8) {
+      return 'La contraseña debe ser mayor a 8 caracteres';
+    }
+    RegExp regexCaractSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+    if (!regexCaractSpecial.hasMatch(value)) {
+      return 'La contraseña debe contener al menos un caracter especial.';
+    }
+    return true;
   }
 }

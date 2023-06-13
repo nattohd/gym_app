@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_form.dart';
 import 'package:gym_app/src/screens/user/widgets/input_form.dart';
@@ -83,8 +84,11 @@ class _FormWidgetState extends State<FormWidget> {
               text: 'Contraseña',
               controller: passwordCtrl,
               validator: (value) {
-                if (ValidatorsForm.isCorrectFormatPassword(value!)) {
-                  return 'Indique su Contraseña';
+                if (ValidatorsForm.isCorrectFormatPassword(value!) == true) {
+                } else {
+                  String errorPass =
+                      ValidatorsForm.isCorrectFormatPassword(value);
+                  return errorPass;
                 }
                 return null;
               },
