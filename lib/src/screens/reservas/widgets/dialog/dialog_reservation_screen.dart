@@ -51,48 +51,9 @@ class DialogReservationScreen extends StatelessWidget {
     String getDate() {
       initializeDateFormatting('es', null);
       DateTime fechaActual = DateTime.now();
-      String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
-      // String fechaNumFormateada =
-      //     DateFormat('dd MMMM yyyy', 'es').format(fechaActual);
-      fechaDiaFormateada =
-          fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
-      int diaFix = int.parse(DateFormat('dd', 'es').format(fechaActual));
-      String diaAbreviado = DateFormat('E', 'es').format(fechaActual);
-      // return fechaNumFormateada;
-
-      List<dynamic> formatoSuma = [];
-
-      switch (fechaDiaFormateada) {
-        case 'Lunes':
-          formatoSuma = [0, 1, 2, 3, 4, 5, 6];
-          break;
-        case 'Martes':
-          formatoSuma = [-1, 0, 1, 2, 3, 4, 5];
-          break;
-        case 'Miércoles':
-          formatoSuma = [-2, -1, 0, 1, 2, 3, 4];
-          break;
-        case 'Jueves':
-          formatoSuma = [-3, -2, -1, 0, 1, 2, 3];
-          break;
-        case 'Viernes':
-          formatoSuma = [-4, -3, -2, -1, 0, 1, 2];
-          break;
-        case 'Sabado':
-          formatoSuma = [-5, -4, -3, -2, -1, 0, 1];
-          break;
-        case 'Domingo':
-          formatoSuma = [1, 2, 3, 4, 5, 6, 0];
-          break;
-      }
-
-      List<dynamic> diaSemana = [];
-
-      formatoSuma.map((diasuma) {
-        diaSemana.add(diasuma + diaFix);
-      }).toList();
-
-      return diaAbreviado;
+      String fechaNumFormateada =
+          DateFormat('dd MMMM yyyy', 'es').format(fechaActual);
+      return fechaNumFormateada;
     }
 
     final colors = Theme.of(context).colorScheme;
@@ -181,7 +142,7 @@ class DialogReservationScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  '2. Dia: $diaReserva 15 de junio',
+                  '2. Dia: $diaReserva 15 junio',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
