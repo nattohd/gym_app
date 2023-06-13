@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+// import 'package:gym_app/src/shared/data/semana_data.dart';
 
 class DialogReservationScreen extends StatelessWidget {
   final int bloque, dia;
@@ -33,6 +34,18 @@ class DialogReservationScreen extends StatelessWidget {
       return diaFinal;
     }
 
+    // Map<String, dynamic>? getHours(int bloque) {
+    //   Map<String, dynamic> hora =
+    //       hours.firstWhere((element) => element['bloque'] == bloque);
+    //   if (hora != null) {
+    //     String entrada = hora['entrada'];
+    //     String salida = hora['salida'];
+    //     return {'entrada': entrada, 'salida': salida};
+    //   } else {
+    //     return null;
+    //   }
+    // }
+
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
     final int bloqueFinal = bloque + 1;
@@ -60,35 +73,35 @@ class DialogReservationScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '1. BLOQUE N° $bloqueFinal',
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 14),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  '2. Dia: $diaReserva 11/11',
-                  style: const TextStyle(fontSize: 16),
+                  '2. Dia: $diaReserva 15 de junio',
+                  style: const TextStyle(fontSize: 14),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '3. Hora Ingreso: ${fechaFormateada.toString()} AM',
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 14),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '4. Hora Salida: ${fechaFormateada.toString()} AM',
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 14),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '5. Fecha Actual: ${fechaFormateada.toString()}',
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 14),
                 ),
               ),
             ],

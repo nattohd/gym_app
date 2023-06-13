@@ -9,7 +9,7 @@ class GrillaCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> columnas = List<int>.generate(8, (index) => index);
+    List<int> columnas = List<int>.generate(7, (index) => index);
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
 

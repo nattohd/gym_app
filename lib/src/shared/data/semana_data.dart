@@ -1,21 +1,12 @@
 List<Map<String, dynamic>> hours = [
-  {'hour': '9:35 AM'},
-  {'hour': '10:55 AM'},
-  {'hour': '12:15 AM'},
-  {'hour': '2:30 PM'},
-  {'hour': '3:50 PM'},
-  {'hour': '5:10 PM'},
-  {'hour': '17:10 PM'},
-  {'hour': '18:30 PM'},
+  {'entrada': '09:35 AM', 'salida': '10:45 AM', 'bloque': 1},
+  {'entrada': '10:55 AM', 'salida': '12:05 AM', 'bloque': 2},
+  {'entrada': '12:15 AM', 'salida': '01:25 PM', 'bloque': 3},
+  {'entrada': '02:30 PM', 'salida': '03:40 PM', 'bloque': 4},
+  {'entrada': '03:50 PM', 'salida': '05:00 PM', 'bloque': 5},
+  {'entrada': '05:10 PM', 'salida': '06:20 PM', 'bloque': 6},
+  {'entrada': '06:30 PM', 'salida': '07:40 PM', 'bloque': 7},
 ];
-
-//   {'entrada': '09:35 AM', 'salida': '10:45 AM', 'bloque': '1'},
-//   {'entrada': '10:55 AM', 'salida': '12:05 AM', 'bloque': '2'},
-//   {'entrada': '12:15 AM', 'salida': '13:25 PM', 'bloque': '3'},
-//   {'entrada': '14:30 PM', 'salida': '15:40 PM', 'bloque': '4'},
-//   {'entrada': '15:50 PM', 'salida': '17:00 PM', 'bloque': '5'},
-//   {'entrada': '17:10 PM', 'salida': '18:20 PM', 'bloque': '6'},
-//   {'entrada': '18:30 PM', 'salida': '19:40 PM', 'bloque': '7'},
 
 List<Map<String, dynamic>> days = [
   {
