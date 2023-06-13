@@ -84,13 +84,9 @@ class _FormWidgetState extends State<FormWidget> {
               text: 'Contraseña',
               controller: passwordCtrl,
               validator: (value) {
-                if (ValidatorsForm.isCorrectFormatPassword(value!) == true) {
-                } else {
-                  String errorPass =
-                      ValidatorsForm.isCorrectFormatPassword(value);
-                  return errorPass;
+                if (ValidatorsForm.isPasswordDefined(value!)) {
+                  return 'Debes ingresar una contraseña';
                 }
-                return null;
               },
             ),
             const Spacer(),
