@@ -43,9 +43,9 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
         body: Column(
           children: [
             Container(
-              child: _buildQrView(context),
               height: size.height * 0.7,
               color: Colors.red,
+              child: _buildQrView(context),
             ),
             Expanded(
               child: Container(

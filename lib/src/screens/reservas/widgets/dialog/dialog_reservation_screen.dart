@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:gym_app/src/shared/data/semana_data.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class DialogReservationScreen extends StatelessWidget {
   final int bloque, dia;
@@ -34,19 +35,6 @@ class DialogReservationScreen extends StatelessWidget {
       return diaFinal;
     }
 
-    // List<dynamic>? _getHour(int bloque) {
-    //   List<dynamic>? entradaSalida = [];
-    //   for (var i = 0; i < hours.length; i++) {
-    //     if (hours[i]['bloque'] == bloque) {
-    //       String entrada = hours[i]['entrada'];
-    //       String salida = hours[i]['salida'];
-    //       entradaSalida = [entrada, salida];
-    //       break;
-    //     }
-    //   }
-    //   return entradaSalida;
-    // }
-
     List<dynamic>? getHour(int bloques) {
       List<dynamic>? entradaSalida = [];
       hours.map((hour) {
@@ -57,6 +45,54 @@ class DialogReservationScreen extends StatelessWidget {
         }
       }).toList();
       return entradaSalida;
+    }
+
+    // obtener fecha actual
+    String getDate() {
+      initializeDateFormatting('es', null);
+      DateTime fechaActual = DateTime.now();
+      String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
+      // String fechaNumFormateada =
+      //     DateFormat('dd MMMM yyyy', 'es').format(fechaActual);
+      fechaDiaFormateada =
+          fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
+      int diaFix = int.parse(DateFormat('dd', 'es').format(fechaActual));
+      String diaAbreviado = DateFormat('E', 'es').format(fechaActual);
+      // return fechaNumFormateada;
+
+      List<dynamic> formatoSuma = [];
+
+      switch (fechaDiaFormateada) {
+        case 'Lunes':
+          formatoSuma = [0, 1, 2, 3, 4, 5, 6];
+          break;
+        case 'Martes':
+          formatoSuma = [-1, 0, 1, 2, 3, 4, 5];
+          break;
+        case 'Miércoles':
+          formatoSuma = [-2, -1, 0, 1, 2, 3, 4];
+          break;
+        case 'Jueves':
+          formatoSuma = [-3, -2, -1, 0, 1, 2, 3];
+          break;
+        case 'Viernes':
+          formatoSuma = [-4, -3, -2, -1, 0, 1, 2];
+          break;
+        case 'Sabado':
+          formatoSuma = [-5, -4, -3, -2, -1, 0, 1];
+          break;
+        case 'Domingo':
+          formatoSuma = [1, 2, 3, 4, 5, 6, 0];
+          break;
+      }
+
+      List<dynamic> diaSemana = [];
+
+      formatoSuma.map((diasuma) {
+        diaSemana.add(diasuma + diaFix);
+      }).toList();
+
+      return diaAbreviado;
     }
 
     final colors = Theme.of(context).colorScheme;
@@ -72,8 +108,7 @@ class DialogReservationScreen extends StatelessWidget {
       entradaBloque = entrada;
       salidaBloque = salida;
     }
-    DateTime fechaActual = DateTime.now();
-    String fechaFormateada = DateFormat('dd/MM/yyyy').format(fechaActual);
+    String fechaActual = getDate();
 
     return AlertDialog(
       title: const Text(
@@ -86,48 +121,104 @@ class DialogReservationScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Estimad@ alumn@ NOMBRE APELLIDO, ¿Se encuentra SEGURO que desea realizar esta RESERVA ?',
-                style: TextStyle(fontSize: 16),
+              RichText(
+                text: const TextSpan(
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Estimad@ alumn@ ',
+                    ),
+                    TextSpan(
+                      text: 'NOMBRE',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' ',
+                    ),
+                    TextSpan(
+                      text: 'APELLIDO',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ', ¿Se encuentra ',
+                    ),
+                    TextSpan(
+                      text: 'SEGURO',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' que desea realizar esta ',
+                    ),
+                    TextSpan(
+                      text: 'RESERVACION',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '?',
+                    ),
+                  ],
+                ),
                 textAlign: TextAlign.justify,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '1. BLOQUE N° $bloqueFinal',
-                  style: const TextStyle(fontSize: 14),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '2. Dia: $diaReserva 15 de junio',
-                  style: const TextStyle(fontSize: 14),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '3. Hora Ingreso: $entradaBloque',
-                  style: const TextStyle(fontSize: 14),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   '4. Hora Salida: $salidaBloque',
-                  style: const TextStyle(fontSize: 14),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  '5. Fecha Actual: ${fechaFormateada.toString()}',
-                  style: const TextStyle(fontSize: 14),
+                  '5. Fecha Actual: $fechaActual',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
-            // ${entradaSalida?[1]}
           ),
         ),
       ),
