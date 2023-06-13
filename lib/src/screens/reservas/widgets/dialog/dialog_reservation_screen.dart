@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-// import 'package:gym_app/src/shared/data/semana_data.dart';
+import 'package:gym_app/src/shared/data/semana_data.dart';
 
 class DialogReservationScreen extends StatelessWidget {
   final int bloque, dia;
@@ -34,22 +34,44 @@ class DialogReservationScreen extends StatelessWidget {
       return diaFinal;
     }
 
-    // Map<String, dynamic>? getHours(int bloque) {
-    //   Map<String, dynamic> hora =
-    //       hours.firstWhere((element) => element['bloque'] == bloque);
-    //   if (hora != null) {
-    //     String entrada = hora['entrada'];
-    //     String salida = hora['salida'];
-    //     return {'entrada': entrada, 'salida': salida};
-    //   } else {
-    //     return null;
+    // List<dynamic>? _getHour(int bloque) {
+    //   List<dynamic>? entradaSalida = [];
+    //   for (var i = 0; i < hours.length; i++) {
+    //     if (hours[i]['bloque'] == bloque) {
+    //       String entrada = hours[i]['entrada'];
+    //       String salida = hours[i]['salida'];
+    //       entradaSalida = [entrada, salida];
+    //       break;
+    //     }
     //   }
+    //   return entradaSalida;
     // }
+
+    List<dynamic>? getHour(int bloques) {
+      List<dynamic>? entradaSalida = [];
+      hours.map((hour) {
+        if (hour['bloque'] == bloques + 1) {
+          String entrada = hour['entrada'];
+          String salida = hour['salida'];
+          entradaSalida = [entrada, salida];
+        }
+      }).toList();
+      return entradaSalida;
+    }
 
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
     final int bloqueFinal = bloque + 1;
     String diaReserva = processDay(dia);
+    List<dynamic>? horarioBloque = getHour(bloque);
+    String entradaBloque = '';
+    String salidaBloque = '';
+    if (horarioBloque != null && horarioBloque.isNotEmpty) {
+      String entrada = horarioBloque[0];
+      String salida = horarioBloque[1];
+      entradaBloque = entrada;
+      salidaBloque = salida;
+    }
     DateTime fechaActual = DateTime.now();
     String fechaFormateada = DateFormat('dd/MM/yyyy').format(fechaActual);
 
@@ -86,14 +108,14 @@ class DialogReservationScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  '3. Hora Ingreso: ${fechaFormateada.toString()} AM',
+                  '3. Hora Ingreso: $entradaBloque',
                   style: const TextStyle(fontSize: 14),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  '4. Hora Salida: ${fechaFormateada.toString()} AM',
+                  '4. Hora Salida: $salidaBloque',
                   style: const TextStyle(fontSize: 14),
                 ),
               ),
@@ -105,6 +127,7 @@ class DialogReservationScreen extends StatelessWidget {
                 ),
               ),
             ],
+            // ${entradaSalida?[1]}
           ),
         ),
       ),
