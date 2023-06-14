@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_app/config/helpers/validators_date.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -7,65 +8,14 @@ class HeaderCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //obtener dias
-    List<dynamic> getDate() {
-      initializeDateFormatting('es', null);
-      DateTime fechaActual = DateTime.now();
-      String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
-      fechaDiaFormateada =
-          fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
-      int diaFix = int.parse(DateFormat('dd', 'es').format(fechaActual));
-
-      List<dynamic> formatoSuma = [];
-
-      switch (fechaDiaFormateada) {
-        case 'Lunes':
-          formatoSuma = [0, 1, 2, 3, 4, 5, 6];
-          break;
-        case 'Martes':
-          formatoSuma = [-1, 0, 1, 2, 3, 4, 5];
-          break;
-        case 'Miércoles':
-          formatoSuma = [-2, -1, 0, 1, 2, 3, 4];
-          break;
-        case 'Jueves':
-          formatoSuma = [-3, -2, -1, 0, 1, 2, 3];
-          break;
-        case 'Viernes':
-          formatoSuma = [-4, -3, -2, -1, 0, 1, 2];
-          break;
-        case 'Sabado':
-          formatoSuma = [-5, -4, -3, -2, -1, 0, 1];
-          break;
-        case 'Domingo':
-          formatoSuma = [1, 2, 3, 4, 5, 6, 0];
-          break;
-      }
-
-      List<dynamic> diaSemana = [
-        ['Lu'],
-        ['Ma'],
-        ['Mi'],
-        ['Ju'],
-        ['Vi'],
-        ['Sa'],
-        ['Do']
-      ];
-
-      for (int i = 0; i < diaSemana.length; i++) {
-        diaSemana[i].add((formatoSuma[i] + diaFix).toString());
-      }
-
-      return diaSemana;
-    }
-
+    int validator = 2;
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     initializeDateFormatting('es', null);
     DateTime fechaActual = DateTime.now();
     String diaFix = DateFormat('dd', 'es').format(fechaActual);
 
-    List<dynamic> diasSemanas = getDate();
+    List<dynamic> diasSemanas = getDateWeek(validator);
 
     return Container(
       width: size.width,
