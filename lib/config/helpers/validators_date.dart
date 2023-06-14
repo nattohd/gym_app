@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:gym_app/src/shared/data/semana_data.dart';
@@ -114,4 +116,31 @@ String dateReservation(String diaReservaTest) {
     }
   }
   return fechaReserva;
+}
+
+void snackbar(BuildContext context, String texto, Color color) {
+  final snackBar = SnackBar(
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const FaIcon(
+          FontAwesomeIcons.check,
+          color: Colors.white,
+        ),
+        KeyedSubtree(
+          key: UniqueKey(),
+          child: Text(
+            texto,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const Text(''),
+      ],
+    ),
+    duration: const Duration(seconds: 2),
+    backgroundColor: color,
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

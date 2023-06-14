@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
 
 class DialogReservationScreen extends StatelessWidget {
@@ -146,6 +145,9 @@ class DialogReservationScreen extends StatelessWidget {
           child: const Text('Cerrar'),
           onPressed: () {
             Navigator.of(context).pop();
+            String texto = 'La reserva se CANCELO con EXITO';
+            Color color = Colors.redAccent;
+            snackbar(context, texto, color);
           },
         ),
         SizedBox(
@@ -154,27 +156,9 @@ class DialogReservationScreen extends StatelessWidget {
           child: FloatingActionButton(
             onPressed: () {
               Navigator.of(context).pop();
-              const snackBar = SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.check,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'La reserva se realizo con EXITO',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(''),
-                  ],
-                ),
-                duration: Duration(seconds: 3),
-                backgroundColor: Colors.green,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              String texto = 'La reserva se realizo con EXITO';
+              Color color = Colors.green;
+              snackbar(context, texto, color);
             },
             backgroundColor: colors.primary,
             child: const Text(
