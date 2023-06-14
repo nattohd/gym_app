@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:gym_app/src/shared/data/semana_data.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:gym_app/config/helpers/validators_date.dart';
 
 class DialogReservationScreen extends StatelessWidget {
   final int bloque, dia;
@@ -12,54 +9,12 @@ class DialogReservationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String processDay(int dia) {
-      String diaFinal = '';
-
-      switch (dia) {
-        case 0:
-          diaFinal = 'Lunes';
-          break;
-        case 1:
-          diaFinal = 'Martes';
-          break;
-        case 2:
-          diaFinal = 'Miercoles';
-          break;
-        case 3:
-          diaFinal = 'Jueves';
-          break;
-        case 4:
-          diaFinal = 'Viernes';
-          break;
-      }
-      return diaFinal;
-    }
-
-    List<dynamic>? getHour(int bloques) {
-      List<dynamic>? entradaSalida = [];
-      hours.map((hour) {
-        if (hour['bloque'] == bloques + 1) {
-          String entrada = hour['entrada'];
-          String salida = hour['salida'];
-          entradaSalida = [entrada, salida];
-        }
-      }).toList();
-      return entradaSalida;
-    }
-
-    // obtener fecha actual
-    String getDate() {
-      initializeDateFormatting('es', null);
-      DateTime fechaActual = DateTime.now();
-      String fechaNumFormateada =
-          DateFormat('dd MMMM yyyy', 'es').format(fechaActual);
-      return fechaNumFormateada;
-    }
-
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
     final int bloqueFinal = bloque + 1;
     String diaReserva = processDay(dia);
+    String diaReservaTest = diaReserva;
+    diaReservaTest = diaReservaTest.substring(0, 2);
     List<dynamic>? horarioBloque = getHour(bloque);
     String entradaBloque = '';
     String salidaBloque = '';
@@ -70,6 +25,8 @@ class DialogReservationScreen extends StatelessWidget {
       salidaBloque = salida;
     }
     String fechaActual = getDate();
+
+    String fechaReserva = dateReservation(diaReservaTest);
 
     return AlertDialog(
       title: const Text(
@@ -142,7 +99,7 @@ class DialogReservationScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  '2. Dia: $diaReserva 15 junio',
+                  '2. Dia: $diaReserva $fechaReserva',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -188,6 +145,9 @@ class DialogReservationScreen extends StatelessWidget {
           child: const Text('Cerrar'),
           onPressed: () {
             Navigator.of(context).pop();
+            String texto = 'La reserva se CANCELO con EXITO';
+            Color color = Colors.redAccent;
+            snackbar(context, texto, color);
           },
         ),
         SizedBox(
@@ -196,27 +156,9 @@ class DialogReservationScreen extends StatelessWidget {
           child: FloatingActionButton(
             onPressed: () {
               Navigator.of(context).pop();
-              const snackBar = SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.check,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'La reserva se realizo con EXITO',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(''),
-                  ],
-                ),
-                duration: Duration(seconds: 3),
-                backgroundColor: Colors.green,
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              String texto = 'La reserva se realizo con EXITO';
+              Color color = Colors.green;
+              snackbar(context, texto, color);
             },
             backgroundColor: colors.primary,
             child: const Text(

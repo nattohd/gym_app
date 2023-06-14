@@ -30,14 +30,18 @@ class GrillaCalendar extends StatelessWidget {
                 );
               },
               child: Container(
+                width: size.width * 0.85 / 5,
+                height: heightGrilla,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: colors.primary,
                     width: .1,
                   ),
+                  // image: const DecorationImage(
+                  //   image: AssetImage('assets/images/check.png'),
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
-                width: size.width * 0.85 / 5,
-                height: heightGrilla,
               ),
             );
           }).toList(),
