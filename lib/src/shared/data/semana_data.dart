@@ -38,10 +38,33 @@ List<Map<String, dynamic>> hours = [
 
 List<Map<String, dynamic>> reservation = [
   {
-    'bloque': '1',
-    'horaEntrada': '09:35 AM',
-    'horaSalida': '10:45 AM',
-    'fechaReserva': '05/05',
-    'fechaActual': '12/06/2023'
+    'id': 1,
+    'user_id': 3,
+    'bloque': 3,
+    'dia': 2,
+    'proposito': 'Entrenar',
+  },
+];
+
+List<Map<String, dynamic>> validatorReservation = [
+  {
+    'diaActual': 'Domingo',
+    'diaReserva': 'Lunes',
+  },
+  {
+    'diaActual': 'Lunes',
+    'diaReserva': 'Martes',
+  },
+  {
+    'diaActual': 'Martes',
+    'diaReserva': 'Miercoles',
+  },
+  {
+    'diaActual': 'Miercoles',
+    'diaReserva': 'Jueves',
+  },
+  {
+    'diaActual': 'Jueves',
+    'diaReserva': 'Viernes',
   },
 ];

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gym_app/config/helpers/validators_date.dart';
 import 'package:gym_app/src/screens/reservas/widgets/dialog/dialog_reservation_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class GrillaCalendar extends StatelessWidget {
   final double heightGrilla;
@@ -12,6 +15,10 @@ class GrillaCalendar extends StatelessWidget {
     List<int> columnas = List<int>.generate(7, (index) => index);
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
+    initializeDateFormatting('es', null);
+    DateTime fechaActual = DateTime.now();
+    String diaFix = DateFormat('EEEE', 'es').format(fechaActual);
+    diaFix = diaFix[0].toUpperCase() + diaFix.substring(1);
 
     return Column(
       children: columnas.map((j) {
@@ -22,12 +29,32 @@ class GrillaCalendar extends StatelessWidget {
               splashColor: colors.primary.withOpacity(.1),
               hoverColor: colors.primary.withOpacity(.1),
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DialogReservationScreen(bloque: j, dia: i);
-                  },
-                );
+                String diaReserva = processDay(i);
+                String accessReservation = getValidatorReservation();
+
+                if (accessReservation == diaReserva) {
+                  i = i + 1;
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DialogReservationScreen(
+                          bloque: j, dia: i - 1, acceso: 'Autorizado');
+                    },
+                    barrierDismissible: false,
+                  );
+                } else {
+                  i = i + 1;
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DialogReservationScreen(
+                          bloque: j, dia: i - 1, acceso: 'Denegado');
+                    },
+                    barrierDismissible: false,
+                  );
+                }
+
+                //print(diaReserva + ' ' + accessReservation);
               },
               child: Container(
                 width: size.width * 0.85 / 5,

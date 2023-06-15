@@ -81,6 +81,12 @@ String processDay(int dia) {
     case 4:
       diaFinal = 'Viernes';
       break;
+    case 5:
+      diaFinal = 'Sabado';
+      break;
+    case 6:
+      diaFinal = 'Domingo';
+      break;
   }
   return diaFinal;
 }
@@ -95,6 +101,23 @@ List<dynamic>? getHour(int bloques) {
     }
   }).toList();
   return entradaSalida;
+}
+
+String getValidatorReservation() {
+  initializeDateFormatting('es', null);
+  DateTime fechaActual = DateTime.now();
+  String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
+  fechaDiaFormateada =
+      fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
+  String accessReservation = '';
+
+  validatorReservation.map((days) {
+    if (days['diaActual'] == fechaDiaFormateada) {
+      String diaReserva = days['diaReserva'];
+      accessReservation = diaReserva;
+    }
+  }).toList();
+  return accessReservation;
 }
 
 String getDate() {
