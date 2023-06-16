@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_app/src/screens/user/widgets/header_profile.dart';
 // import 'package:gym_app/src/services/firestore_service.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -50,9 +51,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const Center(
-        child: Text('Mi perfil'),
-      ),
+      body: const HeaderProfile(),
       backgroundColor: colors.primary,
     );
   }

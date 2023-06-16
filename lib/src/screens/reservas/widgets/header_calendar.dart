@@ -3,9 +3,14 @@ import 'package:gym_app/config/helpers/validators_date.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-class HeaderCalendar extends StatelessWidget {
+class HeaderCalendar extends StatefulWidget {
   const HeaderCalendar({super.key});
 
+  @override
+  State<HeaderCalendar> createState() => _HeaderCalendarState();
+}
+
+class _HeaderCalendarState extends State<HeaderCalendar> {
   @override
   Widget build(BuildContext context) {
     int validator = 2;
@@ -21,6 +26,7 @@ class HeaderCalendar extends StatelessWidget {
         fechaMesActual![0].toUpperCase() + fechaMesActual.substring(1);
 
     List<dynamic> diasSemanas = getDateWeek(validator);
+    print(diasSemanas);
 
     return Column(
       children: [
