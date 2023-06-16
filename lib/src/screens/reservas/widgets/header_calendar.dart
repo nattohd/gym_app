@@ -13,7 +13,6 @@ class HeaderCalendar extends StatefulWidget {
 class _HeaderCalendarState extends State<HeaderCalendar> {
   @override
   Widget build(BuildContext context) {
-    int validator = 2;
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     initializeDateFormatting('es', null);
@@ -25,8 +24,8 @@ class _HeaderCalendarState extends State<HeaderCalendar> {
     fechaMesActual =
         fechaMesActual![0].toUpperCase() + fechaMesActual.substring(1);
 
+    int validator = 2;
     List<dynamic> diasSemanas = getDateWeek(validator);
-    print(diasSemanas);
 
     return Column(
       children: [

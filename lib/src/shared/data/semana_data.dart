@@ -48,10 +48,6 @@ List<Map<String, dynamic>> reservation = [
 
 List<Map<String, dynamic>> validatorReservation = [
   {
-    'diaActual': 'Domingo',
-    'diaReserva': 'Lunes',
-  },
-  {
     'diaActual': 'Lunes',
     'diaReserva': 'Martes',
   },
@@ -74,5 +70,9 @@ List<Map<String, dynamic>> validatorReservation = [
   {
     'diaActual': 'Sabado',
     'diaReserva': 'Domingo',
+  },
+  {
+    'diaActual': 'Domingo',
+    'diaReserva': 'Lunes',
   },
 ];
