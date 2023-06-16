@@ -42,18 +42,16 @@ class GrillaCalendar extends StatelessWidget {
                     },
                     barrierDismissible: false,
                   );
-                  i = i - 1;
+                  i == 0 ? i = i : i = i - 1;
                 } else {
-                  i = i + 1;
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return DialogReservationScreen(
-                          bloque: j, dia: i - 1, acceso: 'Denegado');
+                          bloque: j, dia: i, acceso: 'Denegado');
                     },
                     barrierDismissible: false,
                   );
-                  i = i - 1;
                 }
               },
               child: Container(
