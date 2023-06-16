@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+// import 'package:gym_app/src/services/firestore_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    FireStoreService firestore = FireStoreService();
+    // FireStoreService firestore = FireStoreService();
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
 
