@@ -8,9 +8,11 @@ class ReservasScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reserva tu Hora'),
+        centerTitle: true,
       ),
       body: const Column(
         children: [

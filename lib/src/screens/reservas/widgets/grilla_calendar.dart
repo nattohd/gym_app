@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
-import 'package:gym_app/src/screens/reservas/widgets/dialog/dialog_reservation_screen.dart';
+import 'package:gym_app/src/screens/reservas/widgets/dialog_reservation_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -32,7 +32,12 @@ class GrillaCalendar extends StatelessWidget {
                 String diaReserva = processDay(i);
                 List<String> accessReservation = getValidatorReservation();
 
-                if (accessReservation[1] == diaReserva) {
+                // print(accessReservation[1] + '' + diaReserva);
+
+                if (accessReservation[1] == diaReserva &&
+                    (accessReservation[1] != 'Sabado' ||
+                        accessReservation[0] != 'Sabado' ||
+                        accessReservation[1] != 'Domingo')) {
                   i = i + 1;
                   showDialog(
                     context: context,

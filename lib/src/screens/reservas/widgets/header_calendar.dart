@@ -15,12 +15,12 @@ class HeaderCalendar extends StatelessWidget {
     DateTime fechaActual = DateTime.now();
     String diaFix = DateFormat('dd', 'es').format(fechaActual);
 
-    List<dynamic> diasSemanas = getDateWeek(validator);
-
     String tipoDate = 'mes';
     String? fechaMesActual = getDate(tipoDate);
     fechaMesActual =
         fechaMesActual![0].toUpperCase() + fechaMesActual.substring(1);
+
+    List<dynamic> diasSemanas = getDateWeek(validator);
 
     return Column(
       children: [
@@ -54,7 +54,10 @@ class HeaderCalendar extends StatelessWidget {
           margin: EdgeInsets.only(left: size.width * 0.15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: diasSemanas.sublist(0, 5).map((day) {
+            children: diasSemanas.map((day) {
+              if (day[0] == 'Sa' || day[0] == 'Do') {
+                return Container();
+              }
               return Container(
                 height: size.width * 0.245,
                 width: size.width * 0.85 / 5,

@@ -67,4 +67,12 @@ List<Map<String, dynamic>> validatorReservation = [
     'diaActual': 'Jueves',
     'diaReserva': 'Viernes',
   },
+  {
+    'diaActual': 'Viernes',
+    'diaReserva': 'Sabado',
+  },
+  {
+    'diaActual': 'Sabado',
+    'diaReserva': 'Domingo',
+  },
 ];

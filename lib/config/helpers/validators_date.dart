@@ -11,7 +11,7 @@ List<dynamic> getDateWeek(int validator) {
   int diaFix = int.parse(DateFormat('dd', 'es').format(fechaActual));
   String fechaMesFormateado = DateFormat('MMMM', 'es').format(fechaActual);
 
-  List<dynamic> formatoSuma = [];
+  List<int> formatoSuma = [];
 
   switch (fechaDiaFormateada) {
     case 'Lunes':
