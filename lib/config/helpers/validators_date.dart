@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:gym_app/src/shared/data/semana_data.dart';
@@ -103,29 +101,46 @@ List<dynamic>? getHour(int bloques) {
   return entradaSalida;
 }
 
-String getValidatorReservation() {
+List<String> getValidatorReservation() {
   initializeDateFormatting('es', null);
   DateTime fechaActual = DateTime.now();
   String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
   fechaDiaFormateada =
       fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
-  String accessReservation = '';
+  List<String> accessReservation = [];
 
   validatorReservation.map((days) {
     if (days['diaActual'] == fechaDiaFormateada) {
+      String diaActual = days['diaActual'];
       String diaReserva = days['diaReserva'];
-      accessReservation = diaReserva;
+      accessReservation = [diaActual, diaReserva];
     }
   }).toList();
   return accessReservation;
 }
 
-String getDate() {
+String? getDate(String tipo) {
   initializeDateFormatting('es', null);
   DateTime fechaActual = DateTime.now();
-  String fechaNumFormateada =
+  String fechaCompletaFormateada =
       DateFormat('dd MMMM yyyy', 'es').format(fechaActual);
-  return fechaNumFormateada;
+  String fechaMesFormateada = DateFormat('MMMM', 'es').format(fechaActual);
+  String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
+  fechaDiaFormateada =
+      fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
+
+  if (tipo == 'dia') {
+    return fechaDiaFormateada;
+  } else {
+    if (tipo == 'mes') {
+      return fechaMesFormateada;
+    } else {
+      if (tipo == 'completo') {
+        return fechaCompletaFormateada;
+      }
+    }
+  }
+  return null;
 }
 
 String dateReservation(String diaReservaTest) {
@@ -139,31 +154,4 @@ String dateReservation(String diaReservaTest) {
     }
   }
   return fechaReserva;
-}
-
-void snackbar(BuildContext context, String texto, Color color) {
-  final snackBar = SnackBar(
-    content: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const FaIcon(
-          FontAwesomeIcons.check,
-          color: Colors.white,
-        ),
-        KeyedSubtree(
-          key: UniqueKey(),
-          child: Text(
-            texto,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const Text(''),
-      ],
-    ),
-    duration: const Duration(seconds: 2),
-    backgroundColor: color,
-  );
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

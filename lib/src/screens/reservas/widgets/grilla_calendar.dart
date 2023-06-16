@@ -30,31 +30,29 @@ class GrillaCalendar extends StatelessWidget {
               hoverColor: colors.primary.withOpacity(.1),
               onTap: () {
                 String diaReserva = processDay(i);
-                String accessReservation = getValidatorReservation();
+                List<String> accessReservation = getValidatorReservation();
 
-                if (accessReservation == diaReserva) {
+                if (accessReservation[1] == diaReserva) {
                   i = i + 1;
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return DialogReservationScreen(
-                          bloque: j, dia: i - 1, acceso: 'Autorizado');
+                          bloque: j, dia: i, acceso: 'Autorizado');
                     },
                     barrierDismissible: false,
                   );
+                  i = i - 1;
                 } else {
-                  i = i + 1;
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return DialogReservationScreen(
-                          bloque: j, dia: i - 1, acceso: 'Denegado');
+                          bloque: j, dia: i, acceso: 'Denegado');
                     },
                     barrierDismissible: false,
                   );
                 }
-
-                //print(diaReserva + ' ' + accessReservation);
               },
               child: Container(
                 width: size.width * 0.85 / 5,
@@ -64,10 +62,6 @@ class GrillaCalendar extends StatelessWidget {
                     color: colors.primary,
                     width: .1,
                   ),
-                  // image: const DecorationImage(
-                  //   image: AssetImage('assets/images/check.png'),
-                  //   fit: BoxFit.cover,
-                  // ),
                 ),
               ),
             );
