@@ -42,6 +42,7 @@ class GrillaCalendar extends StatelessWidget {
                     },
                     barrierDismissible: false,
                   );
+                  i = i - 1;
                 } else {
                   i = i + 1;
                   showDialog(
@@ -52,9 +53,8 @@ class GrillaCalendar extends StatelessWidget {
                     },
                     barrierDismissible: false,
                   );
+                  i = i - 1;
                 }
-
-                //print(diaReserva + ' ' + accessReservation);
               },
               child: Container(
                 width: size.width * 0.85 / 5,
@@ -64,10 +64,6 @@ class GrillaCalendar extends StatelessWidget {
                     color: colors.primary,
                     width: .1,
                   ),
-                  // image: const DecorationImage(
-                  //   image: AssetImage('assets/images/check.png'),
-                  //   fit: BoxFit.cover,
-                  // ),
                 ),
               ),
             );
