@@ -1,43 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gym_app/src/services/firestore_service.dart';
+import 'package:gym_app/src/screens/user/widgets/header_profile.dart';
+// import 'package:gym_app/src/services/firestore_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    FireStoreService firestore = FireStoreService();
+    // FireStoreService firestore = FireStoreService();
     final colors = Theme.of(context).colorScheme;
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil'),
-      ),
-      floatingActionButton: FloatingActionButton(
+        title: const Text(
+          'Perfil',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        centerTitle: true,
         backgroundColor: colors.primary,
-        foregroundColor: colors.surface,
-        onPressed: () => context.pop(),
-        child: const Icon(Icons.arrow_back_ios_new_rounded),
       ),
-      body: Center(
-        child: StreamBuilder(
-            stream: firestore.juegos(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const CircularProgressIndicator();
-              }
-              var juegos = snapshot.data?.docs;
-              print(juegos);
-              return ListView.builder(
-                itemCount: juegos?.length,
-                itemBuilder: (context, i) {
-                  var juego = juegos?[i];
-
-                  return Text(juego?['nombre']);
-                },
-              );
-            }),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(left: size.width * 0.1),
+        child: Container(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: size.width * 0.5,
+            child: FloatingActionButton(
+              backgroundColor: colors.primary,
+              foregroundColor: colors.surface,
+              onPressed: () => context.pop(),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  FaIcon(FontAwesomeIcons.rightFromBracket),
+                  Text(
+                    'Cerrar sesion',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
+      body: const HeaderProfile(),
+      backgroundColor: colors.primary,
     );
   }
 }

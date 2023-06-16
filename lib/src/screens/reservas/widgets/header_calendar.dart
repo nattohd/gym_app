@@ -3,24 +3,29 @@ import 'package:gym_app/config/helpers/validators_date.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-class HeaderCalendar extends StatelessWidget {
+class HeaderCalendar extends StatefulWidget {
   const HeaderCalendar({super.key});
 
   @override
+  State<HeaderCalendar> createState() => _HeaderCalendarState();
+}
+
+class _HeaderCalendarState extends State<HeaderCalendar> {
+  @override
   Widget build(BuildContext context) {
-    int validator = 2;
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     initializeDateFormatting('es', null);
     DateTime fechaActual = DateTime.now();
     String diaFix = DateFormat('dd', 'es').format(fechaActual);
 
-    List<dynamic> diasSemanas = getDateWeek(validator);
-
     String tipoDate = 'mes';
     String? fechaMesActual = getDate(tipoDate);
     fechaMesActual =
         fechaMesActual![0].toUpperCase() + fechaMesActual.substring(1);
+
+    int validator = 2;
+    List<dynamic> diasSemanas = getDateWeek(validator);
 
     return Column(
       children: [
@@ -54,7 +59,10 @@ class HeaderCalendar extends StatelessWidget {
           margin: EdgeInsets.only(left: size.width * 0.15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: diasSemanas.sublist(0, 5).map((day) {
+            children: diasSemanas.map((day) {
+              if (day[0] == 'Sa' || day[0] == 'Do') {
+                return Container();
+              }
               return Container(
                 height: size.width * 0.245,
                 width: size.width * 0.85 / 5,
