@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gym_app/src/screens/user/widgets/header_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    FireStoreService firestore = FireStoreService();
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
 
@@ -49,10 +48,8 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const Stack(
-        children: [
-          HeaderProfile(),
-        ],
+      body: const Center(
+        child: Text('Mi perfil'),
       ),
       backgroundColor: colors.primary,
     );

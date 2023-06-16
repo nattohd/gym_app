@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_app/infrastructure/repositories/auth_repository.dart';
+import 'package:gym_app/src/providers/user_provider.dart';
 import 'package:gym_app/src/screens/user/widgets/form.dart';
 import 'package:gym_app/src/screens/user/widgets/header_login.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -33,6 +36,8 @@ class _ButtonInitLogin extends StatefulWidget {
 class _ButtonInitLoginState extends State<_ButtonInitLogin> {
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final userProvider = context.watch<UserProvider>();
     return Expanded(
         child: Column(
       children: [
@@ -50,11 +55,23 @@ class _ButtonInitLoginState extends State<_ButtonInitLogin> {
                 EdgeInsets.symmetric(vertical: 25),
               ),
             ),
-            onPressed: () {
-              if (widget.formKey.currentState!.validate()) context.push('/');
+            onPressed: () async {
+              if (userProvider.status != AuthStatus.authenticating) {
+                await userProvider.loginWithEmailAndPassword(
+                    'test1@gmail.com', '123456');
+                if (userProvider.status == AuthStatus.authenticated) {
+                  context.pushReplacement('/');
+                }
+              }
             },
-            label: const Icon(Icons.keyboard_arrow_right_outlined),
-            icon: const Text('Ingresar'),
+            label: userProvider.status == AuthStatus.authenticating
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : const Icon(Icons.keyboard_arrow_right_outlined),
+            icon: userProvider.status == AuthStatus.authenticating
+                ? Container()
+                : const Text('Ingresar'),
           ),
         ),
       ],
