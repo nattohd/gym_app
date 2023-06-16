@@ -30,19 +30,19 @@ class GrillaCalendar extends StatelessWidget {
               hoverColor: colors.primary.withOpacity(.1),
               onTap: () {
                 String diaReserva = processDay(i);
-                String accessReservation = getValidatorReservation();
+                List<String> accessReservation = getValidatorReservation();
 
-                if (accessReservation == diaReserva) {
+                if (accessReservation[1] == diaReserva) {
                   i = i + 1;
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return DialogReservationScreen(
-                          bloque: j, dia: i - 1, acceso: 'Autorizado');
+                          bloque: j, dia: i, acceso: 'Autorizado');
                     },
                     barrierDismissible: false,
                   );
-                  i == 0 ? i = i : i = i - 1;
+                  i = i - 1;
                 } else {
                   showDialog(
                     context: context,

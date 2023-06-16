@@ -101,18 +101,19 @@ List<dynamic>? getHour(int bloques) {
   return entradaSalida;
 }
 
-String getValidatorReservation() {
+List<String> getValidatorReservation() {
   initializeDateFormatting('es', null);
   DateTime fechaActual = DateTime.now();
   String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
   fechaDiaFormateada =
       fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
-  String accessReservation = '';
+  List<String> accessReservation = [];
 
   validatorReservation.map((days) {
     if (days['diaActual'] == fechaDiaFormateada) {
+      String diaActual = days['diaActual'];
       String diaReserva = days['diaReserva'];
-      accessReservation = diaReserva;
+      accessReservation = [diaActual, diaReserva];
     }
   }).toList();
   return accessReservation;

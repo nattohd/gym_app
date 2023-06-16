@@ -33,6 +33,7 @@ class DialogReservationScreen extends StatelessWidget {
     String fechaReserva = dateReservation(diaReservaTest);
     PageController pageController = PageController(initialPage: 0);
     bool shouldSkipPage = true;
+    List<String> accessReservation = getValidatorReservation();
 
     void scrollToPage(int pageNumber) {
       pageController.animateToPage(
@@ -370,11 +371,13 @@ class DialogReservationScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: size.width * 0.36,
+                      height: accessReservation[0] == diaReserva
+                          ? size.width * 0.48
+                          : size.width * 0.36,
                       width: double.infinity,
-                      child: const Column(
+                      child: Column(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: Center(
                               child: Text(
@@ -386,7 +389,7 @@ class DialogReservationScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: Center(
                               child: Text(
@@ -399,6 +402,20 @@ class DialogReservationScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+                          if (accessReservation[0] == diaReserva)
+                            const Padding(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Center(
+                                child: Text(
+                                  'Si desea inscribirse el mismo dia queda a criterio del profesor a cargo',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
                         ],
                       ),
                     ),
