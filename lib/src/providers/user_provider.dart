@@ -8,36 +8,45 @@ enum AuthStatus {
   notAuthenticated,
 }
 
-AuthStatus globalAuthStatus = AuthStatus.notAuthenticated;
-
 class UserProvider extends ChangeNotifier {
   UserModel? user;
-  AuthStatus status = AuthStatus.notAuthenticated;
+  ValueNotifier<AuthStatus> status =
+      ValueNotifier<AuthStatus>(AuthStatus.notAuthenticated);
   final AuthRepository authRepository = AuthRepository();
 
+  static final UserProvider _singleton = UserProvider._internal();
+  factory UserProvider() {
+    return _singleton;
+  }
+
+  List<String> errors = [];
+
+  UserProvider._internal();
+
   Future<void> loginWithEmailAndPassword(String email, String password) async {
-    status = AuthStatus.authenticating;
+    status.value = AuthStatus.authenticating;
     notifyListeners();
 
     final response =
         await authRepository.loginWithEmailAndPassword(email, password);
-
     if (response != null && response.user != null) {
       // Actualizas el estado cuando el usuario inicia sesión correctamente
       user = UserModel.fromFirestore(response.user!);
-      status = AuthStatus.authenticated;
+      status.value = AuthStatus.authenticated;
+      errors.clear();
     } else {
       // En caso de error en el inicio de sesión
-      status = AuthStatus.notAuthenticated;
+      if (!errors.contains('Credenciales incorrectas')) {
+        errors.add('Credenciales incorrectas');
+      }
+      status.value = AuthStatus.notAuthenticated;
     }
     notifyListeners();
-    globalAuthStatus = status;
   }
 
   Future<void> signOutUser() async {
     await authRepository.signOutUser();
-    status = AuthStatus.notAuthenticated;
+    status.value = AuthStatus.notAuthenticated;
     notifyListeners();
-    globalAuthStatus = status;
   }
 }

@@ -1,27 +1,29 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_form.dart';
+import 'package:gym_app/src/providers/user_provider.dart';
 import 'package:gym_app/src/screens/user/widgets/input_form.dart';
+import 'package:provider/provider.dart';
 
 class FormWidget extends StatefulWidget {
   final GlobalKey<FormState> formKey;
+  final List<TextEditingController> controllers;
 
-  const FormWidget({super.key, required this.formKey});
+  const FormWidget(
+      {super.key, required this.formKey, required this.controllers});
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
 
 class _FormWidgetState extends State<FormWidget> {
-  TextEditingController emailCtrl = TextEditingController();
-  TextEditingController passwordCtrl = TextEditingController();
-  String errorText = '';
-
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailCtrl = widget.controllers[0];
+    TextEditingController passwordCtrl = widget.controllers[1];
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
     final isDarkMode = Brightness.dark == Theme.of(context).brightness;
+    final userProvider = context.watch<UserProvider>();
 
     return Form(
       key: widget.formKey,
@@ -88,6 +90,24 @@ class _FormWidgetState extends State<FormWidget> {
                   return 'Debes ingresar una contraseña';
                 }
               },
+            ),
+            const SizedBox(height: 15),
+            Column(
+              children: userProvider.errors.map((error) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.warning_amber_rounded,
+                      color: colors.error,
+                    ),
+                    Text(
+                      error,
+                      style: TextStyle(color: colors.error),
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
             const Spacer(),
             Expanded(

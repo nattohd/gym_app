@@ -13,8 +13,8 @@ class AuthRepository {
         password: password,
       );
       return response;
-    } catch (e) {
-      print(e);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
       return null;
     }
   }

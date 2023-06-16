@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gym_app/src/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -36,10 +35,9 @@ class _MenuDesplegableState extends State<MenuDesplegable> {
           ],
         ),
         onSelected: (value) async {
-          if (value == 'logout') {
+          if (value == 'logout' &&
+              userProvider.status.value == AuthStatus.authenticated) {
             await userProvider.signOutUser();
-            // ignore: use_build_context_synchronously
-            context.pushReplacement('/login');
           }
         },
         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
