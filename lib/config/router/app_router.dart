@@ -1,7 +1,8 @@
+import 'package:gym_app/src/providers/user_provider.dart';
 import 'package:gym_app/src/screens/screens.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
-// GoRouter configuration
 final appRouter = GoRouter(
   // initialLocation: '/login',
   routes: [
@@ -30,4 +31,27 @@ final appRouter = GoRouter(
       builder: (context, state) => const QrGenerateScreen(),
     ),
   ],
+  redirect: (context, state) {
+    final isGoingTo = state.matchedLocation;
+
+    print(globalAuthStatus);
+    print(isGoingTo);
+
+    if (globalAuthStatus == AuthStatus.notAuthenticated) {
+      // if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+      if (isGoingTo == '/login') return null;
+
+      return '/login';
+    }
+
+    if (globalAuthStatus == AuthStatus.authenticated) {
+      if (isGoingTo == '/login')
+      // isGoingTo == '/register' ||
+      // isGoingTo == '/splash')
+      {
+        return '/';
+      }
+    }
+    return null;
+  },
 );
