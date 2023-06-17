@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_app/src/providers/user_provider.dart';
+import 'package:gym_app/src/providers/providers.dart';
 import 'package:provider/provider.dart';
 
 class MenuDesplegable extends StatefulWidget {

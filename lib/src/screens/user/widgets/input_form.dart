@@ -42,7 +42,6 @@ class _InputFormState extends State<InputForm> {
     final colors = Theme.of(context).colorScheme;
     return TextFormField(
       obscureText: passObscure,
-      autofocus: true,
       validator: widget.validator,
       controller: widget.controller,
       keyboardType: widget.textInputType,

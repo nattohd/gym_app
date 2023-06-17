@@ -4,8 +4,22 @@ import 'package:gym_app/main.dart';
 class AuthRepository {
   final FirebaseAuth auth =
       FirebaseAuth.instanceFor(app: firebaseService.firebaseApp);
+  OAuthProvider provider = OAuthProvider('microsoft.com');
 
-  MicrosoftAuthProvider microsoftSignIn = MicrosoftAuthProvider();
+  Future<UserCredential?> loginWithMicrosoft() async {
+    try {
+      // provider.setScopes(['mail.read', 'calendars.read']);
+      provider.setCustomParameters({
+        'prompt': 'consent',
+        'login_hint': 'usuario@usm.cl',
+      });
+      final response = await auth.signInWithProvider(provider);
+      return response;
+    } on FirebaseAuthException catch (err) {
+      print('ERROR EN "loginWithMicrosoft"');
+      return null;
+    }
+  }
 
   Future<UserCredential?> loginWithEmailAndPassword(
       String email, String password) async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_form.dart';
-import 'package:gym_app/src/providers/user_provider.dart';
+import 'package:gym_app/src/providers/providers.dart';
 import 'package:gym_app/src/screens/user/widgets/input_form.dart';
 import 'package:provider/provider.dart';
 
@@ -28,10 +28,10 @@ class _FormWidgetState extends State<FormWidget> {
     return Form(
       key: widget.formKey,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
         margin: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 10),
         width: size.width,
-        height: size.height * 0.45,
+        height: size.height * 0.40,
         decoration: BoxDecoration(
           color:
               isDarkMode ? const Color.fromARGB(255, 21, 21, 21) : Colors.white,
@@ -47,10 +47,11 @@ class _FormWidgetState extends State<FormWidget> {
             ),
           ],
         ),
-        child: Column(
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
           children: [
             Container(
-              margin: const EdgeInsets.only(bottom: 20, top: 5),
+              margin: const EdgeInsets.only(bottom: 10, top: 0),
               child: Column(
                 children: [
                   Row(
@@ -113,10 +114,12 @@ class _FormWidgetState extends State<FormWidget> {
             Expanded(
               child: InkWell(
                 onTap: () {},
-                child: Text(
-                  '¿Olvidaste tu contraseña?',
-                  style: TextStyle(
-                    color: colors.surfaceTint,
+                child: Center(
+                  child: Text(
+                    '¿Olvidaste tu contraseña?',
+                    style: TextStyle(
+                      color: colors.surfaceTint,
+                    ),
                   ),
                 ),
               ),

@@ -23,6 +23,24 @@ class UserProvider extends ChangeNotifier {
 
   UserProvider._internal();
 
+  Future<void> loginWithMicrosoft() async {
+    status.value = AuthStatus.authenticating;
+    notifyListeners();
+
+    final response = await authRepository.loginWithMicrosoft();
+    if (response != null && response.user != null) {
+      user = UserModel.fromFirestore(response.user!);
+      status.value = AuthStatus.authenticated;
+      errors.clear();
+    } else {
+      if (!errors.contains('Ocurrio un error, intenta de nuevo.')) {
+        errors.add('Ocurrio un error, intenta de nuevo.');
+      }
+      status.value = AuthStatus.notAuthenticated;
+    }
+    notifyListeners();
+  }
+
   Future<void> loginWithEmailAndPassword(String email, String password) async {
     status.value = AuthStatus.authenticating;
     notifyListeners();
@@ -30,12 +48,10 @@ class UserProvider extends ChangeNotifier {
     final response =
         await authRepository.loginWithEmailAndPassword(email, password);
     if (response != null && response.user != null) {
-      // Actualizas el estado cuando el usuario inicia sesión correctamente
       user = UserModel.fromFirestore(response.user!);
       status.value = AuthStatus.authenticated;
       errors.clear();
     } else {
-      // En caso de error en el inicio de sesión
       if (!errors.contains('Credenciales incorrectas')) {
         errors.add('Credenciales incorrectas');
       }

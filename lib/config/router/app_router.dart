@@ -1,4 +1,4 @@
-import 'package:gym_app/src/providers/user_provider.dart';
+import 'package:gym_app/src/providers/providers.dart';
 import 'package:gym_app/src/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 

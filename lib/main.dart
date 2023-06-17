@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/firebase/firebase_app.dart';
-import 'package:gym_app/src/providers/user_provider.dart';
+import 'package:gym_app/src/providers/providers.dart';
 import 'package:provider/provider.dart';
 import 'config/router/app_router.dart';
 import 'config/themes/main_theme.dart';
