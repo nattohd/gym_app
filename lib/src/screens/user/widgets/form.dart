@@ -90,6 +90,7 @@ class _FormWidgetState extends State<FormWidget> {
                 if (ValidatorsForm.isPasswordDefined(value!)) {
                   return 'Debes ingresar una contraseña';
                 }
+                return null;
               },
             ),
             const SizedBox(height: 15),

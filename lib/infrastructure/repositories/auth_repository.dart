@@ -16,7 +16,7 @@ class AuthRepository {
       final response = await auth.signInWithProvider(provider);
       return response;
     } on FirebaseAuthException catch (err) {
-      print('ERROR EN "loginWithMicrosoft"');
+      print('ERROR EN "loginWithMicrosoft": $err');
       return null;
     }
   }
