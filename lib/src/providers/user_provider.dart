@@ -23,6 +23,28 @@ class UserProvider extends ChangeNotifier {
 
   UserProvider._internal();
 
+  Future<void> getDataFromRedirect() async {
+    final response = await authRepository.getDataFromRedirect();
+    if (response != null && response.user != null) {
+      user = UserModel.fromFirestore(response.user!);
+      status.value = AuthStatus.authenticated;
+      errors.clear();
+    } else {
+      if (!errors.contains('Ha ocurrido un error, intenta de nuevo.')) {
+        errors.add('Ha ocurrido un error, intenta de nuevo.');
+      }
+      status.value = AuthStatus.notAuthenticated;
+    }
+    notifyListeners();
+  }
+
+  Future<void> loginWithMicrosoftProvider() async {
+    status.value = AuthStatus.authenticating;
+    notifyListeners();
+
+    await authRepository.loginWithMicrosoftProvider();
+  }
+
   Future<void> loginWithEmailAndPassword(String email, String password) async {
     status.value = AuthStatus.authenticating;
     notifyListeners();
