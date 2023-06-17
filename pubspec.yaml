@@ -45,6 +45,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
   simple_animations: ^4.0.1
+  string_normalizer: ^0.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

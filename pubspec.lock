@@ -365,6 +365,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  string_normalizer:
+    dependency: "direct main"
+    description:
+      name: string_normalizer
+      sha256: "12b77051be3742e6d5fa058c6d63e6c7b5b3ecb4b5cdd65a2ad784fb8eea90e9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   string_scanner:
     dependency: transitive
     description:

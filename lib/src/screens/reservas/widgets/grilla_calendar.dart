@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
 import 'package:gym_app/src/screens/reservas/widgets/dialog_reservation_screen.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 
 class GrillaCalendar extends StatelessWidget {
   final double heightGrilla;
@@ -15,29 +13,20 @@ class GrillaCalendar extends StatelessWidget {
     List<int> columnas = List<int>.generate(7, (index) => index);
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
-    initializeDateFormatting('es', null);
-    DateTime fechaActual = DateTime.now();
-    String diaFix = DateFormat('EEEE', 'es').format(fechaActual);
-    diaFix = diaFix[0].toUpperCase() + diaFix.substring(1);
+    List<String> accessReservation = getValidatorReservation();
 
     return Column(
       children: columnas.map((j) {
         List<int> filas = List<int>.generate(5, (index) => index);
         return Row(
           children: filas.map((i) {
+            String diaReserva = processDay(i);
+            diaReserva = deletAccent(diaReserva);
             return InkWell(
               splashColor: colors.primary.withOpacity(.1),
               hoverColor: colors.primary.withOpacity(.1),
               onTap: () {
-                String diaReserva = processDay(i);
-                List<String> accessReservation = getValidatorReservation();
-
-                // print(accessReservation[1] + '' + diaReserva);
-
-                if (accessReservation[1] == diaReserva &&
-                    (accessReservation[1] != 'Sabado' ||
-                        accessReservation[0] != 'Sabado' ||
-                        accessReservation[1] != 'Domingo')) {
+                if (accessReservation[1] == diaReserva) {
                   i = i + 1;
                   showDialog(
                     context: context,
@@ -64,9 +53,12 @@ class GrillaCalendar extends StatelessWidget {
                 height: heightGrilla,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: colors.primary,
-                    width: .1,
+                    color: Colors.black,
+                    width: .3,
                   ),
+                  color: accessReservation[1] != diaReserva
+                      ? Colors.grey
+                      : Colors.white,
                 ),
               ),
             );

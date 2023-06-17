@@ -53,10 +53,10 @@ List<Map<String, dynamic>> validatorReservation = [
   },
   {
     'diaActual': 'Martes',
-    'diaReserva': 'Miercoles',
+    'diaReserva': 'Miércoles',
   },
   {
-    'diaActual': 'Miercoles',
+    'diaActual': 'Miércoles',
     'diaReserva': 'Jueves',
   },
   {
@@ -65,10 +65,10 @@ List<Map<String, dynamic>> validatorReservation = [
   },
   {
     'diaActual': 'Viernes',
-    'diaReserva': 'Sabado',
+    'diaReserva': 'Sábado',
   },
   {
-    'diaActual': 'Sabado',
+    'diaActual': 'Sábado',
     'diaReserva': 'Domingo',
   },
   {
