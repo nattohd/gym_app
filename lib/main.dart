@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UserProvider()..getDataFromRedirect(),
+          create: (_) => UserProvider(),
         )
       ],
       child: MaterialApp.router(

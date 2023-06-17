@@ -62,11 +62,10 @@ class _ButtonInitLoginState extends State<_ButtonInitLogin> {
             onPressed: () async {
               final email = widget.controllers[0].text;
               final password = widget.controllers[1].text;
-              await userProvider.loginWithMicrosoftProvider();
-              // if (widget.formKey.currentState!.validate() &&
-              //     userProvider.status.value != AuthStatus.authenticating) {
-              //   await userProvider.loginWithEmailAndPassword(email, password);
-              // }
+              if (widget.formKey.currentState!.validate() &&
+                  userProvider.status.value != AuthStatus.authenticating) {
+                await userProvider.loginWithEmailAndPassword(email, password);
+              }
             },
             label: userProvider.status.value == AuthStatus.authenticating
                 ? const CircularProgressIndicator(
