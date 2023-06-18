@@ -11,6 +11,7 @@ class ButtonNormalLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
+    Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       width: double.infinity,
@@ -21,8 +22,8 @@ class ButtonNormalLogin extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          padding: const MaterialStatePropertyAll(
-            EdgeInsets.symmetric(vertical: 15),
+          padding: MaterialStatePropertyAll(
+            EdgeInsets.symmetric(vertical: size.height * 0.04),
           ),
         ),
         onPressed: () async {

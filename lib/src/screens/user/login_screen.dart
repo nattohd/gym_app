@@ -13,18 +13,20 @@ class LoginScreen extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Column(children: [
-        const HeaderLogin(),
-        FormWidget(
-          formKey: formKey,
-          controllers: [emailCtrl, passwordCtrl],
-        ),
-        const SizedBox(height: 20),
-        ButtonFooter(
-          formKey: formKey,
-          controllers: [emailCtrl, passwordCtrl],
-        ),
-      ]),
+      body: ListView(
+        children: [
+          const HeaderLogin(),
+          FormWidget(
+            formKey: formKey,
+            controllers: [emailCtrl, passwordCtrl],
+          ),
+          const SizedBox(height: 20),
+          ButtonFooter(
+            formKey: formKey,
+            controllers: [emailCtrl, passwordCtrl],
+          ),
+        ],
+      ),
     );
   }
 }

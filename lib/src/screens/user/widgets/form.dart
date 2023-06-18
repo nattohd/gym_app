@@ -28,7 +28,8 @@ class _FormWidgetState extends State<FormWidget> {
     return Form(
       key: widget.formKey,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+        padding:
+            EdgeInsets.symmetric(vertical: size.height * 0.05, horizontal: 30),
         margin: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 10),
         width: size.width,
         height: size.height * 0.40,
