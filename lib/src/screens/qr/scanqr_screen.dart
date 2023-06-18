@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_app/src/providers/reservas/reservas_provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQRScreen extends StatefulWidget {
@@ -16,7 +17,12 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
+  bool showed = false;
+  late Map data;
+  late String dia;
+  late String horaEntrada;
+  late String horaSalida;
+  late int bloque;
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -33,37 +39,24 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
-        appBar: AppBar(),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: colors.primary,
-          foregroundColor: colors.surface,
-          onPressed: () => context.pop(),
-          child: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),
-        body: Column(
-          children: [
-            Container(
-              height: size.height * 0.7,
-              color: Colors.red,
-              child: _buildQrView(context),
-            ),
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-              ),
-            ),
-          ],
-        ));
+      appBar: AppBar(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: colors.primary,
+        foregroundColor: colors.surface,
+        onPressed: () => context.pop(),
+        child: const Icon(Icons.arrow_back_ios_new_rounded),
+      ),
+      body: SizedBox(
+        child: _buildQrView(context),
+      ),
+    );
   }
 
   Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 150.0
         : 300.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
@@ -82,8 +75,43 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
+      setState(() async {
         result = scanData;
+
+        if (result != Barcode("", BarcodeFormat.aztec, []) && !showed) {
+          showed == true;
+          controller.pauseCamera();
+          data = await getCosas(result!.code as String, 'reservas');
+          dia = data['dia'];
+          horaEntrada = data['entrada'];
+          horaSalida = data['salida'];
+          bloque = data['bloque'];
+          // ignore: use_build_context_synchronously
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Scaneado correctamente'),
+                    content: Container(
+                      height: 300,
+                      child: Column(
+                        children: [
+                          Text('Hora Inicio: $horaEntrada'),
+                          Text('Hora Termino: $horaSalida'),
+                          Text('Bloque: ${bloque.toString()}'),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Salir'),
+                        onPressed: () {
+                          Navigator.pop(context, 'Cancel');
+                          controller.resumeCamera();
+                        },
+                      )
+                    ],
+                  ));
+        }
       });
     });
   }
