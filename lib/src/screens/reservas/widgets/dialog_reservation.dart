@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
 
-class DialogReservationScreen extends StatelessWidget {
+class DialogReservation extends StatelessWidget {
   final int bloque, dia;
   final String acceso;
 
-  const DialogReservationScreen(
+  const DialogReservation(
       {super.key,
       required this.bloque,
       required this.dia,

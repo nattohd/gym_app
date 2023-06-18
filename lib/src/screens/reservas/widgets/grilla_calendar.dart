@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
-import 'package:gym_app/src/screens/reservas/widgets/dialog_reservation_screen.dart';
+import 'package:gym_app/src/screens/reservas/widgets/dialog_reservation.dart';
 
 class GrillaCalendar extends StatelessWidget {
   final double heightGrilla;
@@ -31,7 +31,7 @@ class GrillaCalendar extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return DialogReservationScreen(
+                      return DialogReservation(
                           bloque: j, dia: i, acceso: 'Autorizado');
                     },
                     barrierDismissible: false,
@@ -41,7 +41,7 @@ class GrillaCalendar extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return DialogReservationScreen(
+                      return DialogReservation(
                           bloque: j, dia: i, acceso: 'Denegado');
                     },
                     barrierDismissible: false,

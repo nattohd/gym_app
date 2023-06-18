@@ -126,7 +126,6 @@ List<String> getValidatorReservation() {
   }).toList();
 
   //El resultado es: accessReservation = [Sabado, Domingo]
-
   return accessReservation;
 }
 
