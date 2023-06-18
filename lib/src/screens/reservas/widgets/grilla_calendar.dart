@@ -13,6 +13,7 @@ class GrillaCalendar extends StatelessWidget {
     List<int> columnas = List<int>.generate(7, (index) => index);
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
+    final textStyles = Theme.of(context).textTheme;
     List<String> accessReservation = getValidatorReservation();
 
     return Column(
@@ -49,18 +50,30 @@ class GrillaCalendar extends StatelessWidget {
                 }
               },
               child: Container(
-                width: size.width * 0.85 / 5,
-                height: heightGrilla,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                    width: .3,
+                  width: size.width * 0.85 / 5,
+                  height: heightGrilla,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: colors.primary,
+                      width: .3,
+                    ),
+                    color: accessReservation[1] != diaReserva
+                        ? Colors.blueGrey.withOpacity(.2)
+                        : Colors.transparent,
                   ),
-                  color: accessReservation[1] != diaReserva
-                      ? Colors.grey
-                      : Colors.white,
-                ),
-              ),
+                  child: accessReservation[1] != diaReserva
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.lock_clock_outlined,
+                                color: colors.primary),
+                            Text(
+                              'Bloqueado',
+                              style: textStyles.labelSmall,
+                            )
+                          ],
+                        )
+                      : const SizedBox()),
             );
           }).toList(),
         );
