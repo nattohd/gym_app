@@ -12,7 +12,6 @@ class LoginScreen extends StatelessWidget {
     TextEditingController passwordCtrl = TextEditingController();
     final formKey = GlobalKey<FormState>();
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: ListView(
         children: [
           const HeaderLogin(),
@@ -25,6 +24,7 @@ class LoginScreen extends StatelessWidget {
             formKey: formKey,
             controllers: [emailCtrl, passwordCtrl],
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );

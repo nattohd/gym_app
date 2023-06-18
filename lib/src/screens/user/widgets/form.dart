@@ -29,10 +29,10 @@ class _FormWidgetState extends State<FormWidget> {
       key: widget.formKey,
       child: Container(
         padding:
-            EdgeInsets.symmetric(vertical: size.height * 0.05, horizontal: 30),
-        margin: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 10),
+            EdgeInsets.symmetric(vertical: size.height * 0.03, horizontal: 30),
+        margin: const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 10),
         width: size.width,
-        height: size.height * 0.40,
+        height: size.height * 0.38,
         decoration: BoxDecoration(
           color:
               isDarkMode ? const Color.fromARGB(255, 21, 21, 21) : Colors.white,

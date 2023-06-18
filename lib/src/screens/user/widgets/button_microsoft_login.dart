@@ -20,7 +20,7 @@ class ButtonMicrosoftLogin extends StatelessWidget {
             ),
           ),
           padding: MaterialStatePropertyAll(
-            EdgeInsets.symmetric(vertical: size.height * 0.04),
+            EdgeInsets.symmetric(vertical: size.height * 0.025),
           ),
         ),
         onPressed: () async {
