@@ -10,18 +10,18 @@ enum AuthStatus {
 
 class UserProvider extends ChangeNotifier {
   UserModel? user;
-  ValueNotifier<AuthStatus> status =
-      ValueNotifier<AuthStatus>(AuthStatus.notAuthenticated);
+  List<String> errors = [];
   final AuthRepository authRepository = AuthRepository();
 
+  // ⬇ Esto no aplica para los demas provider, solo factible en este ⬇
+  ValueNotifier<AuthStatus> status =
+      ValueNotifier<AuthStatus>(AuthStatus.notAuthenticated);
   static final UserProvider _singleton = UserProvider._internal();
   factory UserProvider() {
     return _singleton;
   }
-
-  List<String> errors = [];
-
   UserProvider._internal();
+  // ⬆ Esto no aplica para los demas provider, solo factible en este ⬆
 
   Future<void> loginWithMicrosoft() async {
     status.value = AuthStatus.authenticating;
