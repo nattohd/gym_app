@@ -28,8 +28,10 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
 
     final response = await authRepository.loginWithMicrosoft();
-    if (response != null && response.user != null) {
-      user = UserModel.fromFirestore(response.user!);
+    if (response.userCredential != null &&
+        response.userCredential?.user != null) {
+      user = UserModel.fromFirestore(
+          response.userCredential!.user!, response.profile);
       status.value = AuthStatus.authenticated;
       errors.clear();
     } else {
@@ -47,8 +49,10 @@ class UserProvider extends ChangeNotifier {
 
     final response =
         await authRepository.loginWithEmailAndPassword(email, password);
-    if (response != null && response.user != null) {
-      user = UserModel.fromFirestore(response.user!);
+    if (response.userCredential != null &&
+        response.userCredential?.user != null) {
+      user = UserModel.fromFirestore(
+          response.userCredential!.user!, response.profile);
       status.value = AuthStatus.authenticated;
       errors.clear();
     } else {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gym_app/src/providers/providers.dart';
+import 'package:provider/provider.dart';
 
 class HeaderProfile extends StatelessWidget {
   const HeaderProfile({super.key});
@@ -8,100 +9,133 @@ class HeaderProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final userProvider = context.watch<UserProvider>();
 
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: size.width * 1.85,
-            width: double.infinity,
-            color: colors.primary,
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: size.width * 1.72,
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.elliptical(200, 50),
-                      ),
+    return CustomPaint(
+      painter: _HeaderDiagonalPainter(colors.primary),
+      child: ClipPath(
+        clipper: _ClipperHexagonal(),
+        child: Container(
+          color: colors.primary,
+          height: size.height * 0.2,
+          width: size.width,
+          child: Stack(
+            children: [
+              Positioned(
+                top: size.width * 0.04,
+                left: size.width * 0.3,
+                child: const Column(
+                  children: [
+                    Text(
+                      '0',
+                      style: TextStyle(color: Colors.white, fontSize: 30),
                     ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    height: size.width * 0.33,
-                    width: size.width * 0.33,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.red,
+                    Text(
+                      'Reservas',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                  ),
+                  ],
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: size.width * 1.51,
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: SizedBox(
-                            height: size.width * 0.11,
-                            width: double.infinity,
-                            child: Text(
-                              'Nombre Apellido',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: colors.primary,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: 1,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: Container(
-                                  height: size.width * 0.16,
-                                  width: size.width * 0.16,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.red,
-                                  ),
-                                  child: const Center(
-                                    child: FaIcon(
-                                      FontAwesomeIcons.user,
-                                    ),
-                                  ),
-                                ),
-                                title: const Text('nose'),
-                                trailing: Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  color: colors.primary,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+              ),
+              Positioned(
+                top: size.width * 0.04,
+                left: size.width * 0.5,
+                child: const Column(
+                  children: [
+                    Text(
+                      '1',
+                      style: TextStyle(color: Colors.white, fontSize: 30),
                     ),
-                  ),
+                    Text(
+                      'Faltas',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: size.width * 0.04,
+                left: size.width * 0.65,
+                child: const Column(
+                  children: [
+                    Text(
+                      'Activo',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 16, 180, 22),
+                          fontSize: 30),
+                    ),
+                    Text(
+                      'Estado para reservar',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 0,
+                left: size.width * 0.05,
+                child: Container(
+                  width: size.width * 0.22,
+                  height: size.width * 0.22,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Image.asset('assets/images/user1.png'),
+                ),
+              ),
+              Positioned(
+                bottom: size.width * 0.12,
+                left: size.width * 0.12,
+                child: Text(
+                  userProvider.user!.displayName,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              )
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
+}
+
+class _ClipperHexagonal extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+
+    path.lineTo(0, size.height * 0.7);
+    path.conicTo(
+        size.width * 0.75, size.height, size.width, size.height * 0.7, 20.0);
+    path.lineTo(size.width, 0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
+}
+
+class _HeaderDiagonalPainter extends CustomPainter {
+  final Color color;
+
+  const _HeaderDiagonalPainter(this.color);
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint();
+    paint.style = PaintingStyle.fill;
+    final path = Path();
+
+    path.lineTo(0, size.height * 0.7);
+    path.conicTo(
+        size.width * 0.75, size.height, size.width, size.height * 0.7, 20.0);
+    path.lineTo(size.width, 0);
+    // canvas.drawPath(path, paint);
+    canvas.drawShadow(path, color, 10.0, false);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

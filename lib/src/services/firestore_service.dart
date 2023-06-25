@@ -4,4 +4,7 @@ class FireStoreService {
   Stream<QuerySnapshot> juegos() {
     return FirebaseFirestore.instance.collection('juegos').snapshots();
   }
+  // Future<QuerySnapshot> juegos() {
+  //   return FirebaseFirestore.instance.collection('juegos').snapshots();
+  // }
 }

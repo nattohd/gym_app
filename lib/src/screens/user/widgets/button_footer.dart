@@ -14,33 +14,31 @@ class ButtonFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
     final colors = Theme.of(context).colorScheme;
-    return Expanded(
-      child: userProvider.status.value == AuthStatus.authenticating
-          ? Center(
-              child: Column(
-                children: [
-                  CircularProgressIndicator(
-                    color: colors.primary,
-                    strokeWidth: 3,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Verificando...',
-                    style: TextStyle(color: colors.primary),
-                  ),
-                ],
-              ),
-            )
-          : Column(
+    return userProvider.status.value == AuthStatus.authenticating
+        ? Center(
+            child: Column(
               children: [
-                ButtonNormalLogin(
-                  formKey: formKey,
-                  controllers: [controllers[0], controllers[1]],
+                CircularProgressIndicator(
+                  color: colors.primary,
+                  strokeWidth: 3,
                 ),
-                const SizedBox(height: 15),
-                const ButtonMicrosoftLogin(),
+                const SizedBox(height: 10),
+                Text(
+                  'Verificando...',
+                  style: TextStyle(color: colors.primary),
+                ),
               ],
             ),
-    );
+          )
+        : Column(
+            children: [
+              ButtonNormalLogin(
+                formKey: formKey,
+                controllers: [controllers[0], controllers[1]],
+              ),
+              const SizedBox(height: 15),
+              const ButtonMicrosoftLogin(),
+            ],
+          );
   }
 }
