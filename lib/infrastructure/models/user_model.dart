@@ -37,4 +37,9 @@ class UserModel {
       carrera: profile?['carrera'],
     );
   }
+
+  void setProfileUser(String rut, String carrera) {
+    this.rut = rut;
+    this.carrera = carrera;
+  }
 }

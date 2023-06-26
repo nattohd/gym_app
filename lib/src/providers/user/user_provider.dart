@@ -8,10 +8,16 @@ enum AuthStatus {
   notAuthenticated,
 }
 
+enum UiStatus {
+  loading,
+  finished,
+}
+
 class UserProvider extends ChangeNotifier {
   UserModel? user;
   List<String> errors = [];
   final AuthRepository authRepository = AuthRepository();
+  UiStatus uiStatus = UiStatus.finished;
 
   // ⬇ Esto no aplica para los demas provider, solo factible en este ⬇
   ValueNotifier<AuthStatus> status =
@@ -22,6 +28,19 @@ class UserProvider extends ChangeNotifier {
   }
   UserProvider._internal();
   // ⬆ Esto no aplica para los demas provider, solo factible en este ⬆
+
+  Future<void> setUserProfile(String rut, String carrera) async {
+    uiStatus = UiStatus.loading;
+    notifyListeners();
+    final response =
+        await authRepository.setUserProfile(user!.uid, rut, carrera);
+    print(response);
+    if (user != null) {
+      user?.setProfileUser(rut, carrera);
+    }
+    uiStatus = UiStatus.finished;
+    notifyListeners();
+  }
 
   Future<void> loginWithMicrosoft() async {
     status.value = AuthStatus.authenticating;

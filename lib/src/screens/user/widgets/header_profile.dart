@@ -18,7 +18,7 @@ class HeaderProfile extends StatelessWidget {
         clipper: _ClipperHexagonal(),
         child: Container(
           color: colors.primary,
-          height: size.height * 0.2,
+          height: size.height * 0.22,
           width: size.width,
           child: Stack(
             children: [
@@ -57,15 +57,20 @@ class HeaderProfile extends StatelessWidget {
               Positioned(
                 top: size.width * 0.04,
                 left: size.width * 0.65,
-                child: const Column(
+                child: Column(
                   children: [
-                    Text(
-                      'Activo',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 16, 180, 22),
-                          fontSize: 30),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.009, horizontal: 18),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 26, 167, 30),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Text(
+                        'Activo',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ),
-                    Text(
+                    const Text(
                       'Estado para reservar',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
@@ -86,7 +91,7 @@ class HeaderProfile extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: size.width * 0.12,
+                bottom: size.width * 0.14,
                 left: size.width * 0.12,
                 child: Text(
                   userProvider.user!.displayName,
