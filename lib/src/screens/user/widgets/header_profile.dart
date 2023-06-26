@@ -63,7 +63,7 @@ class HeaderProfile extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           vertical: size.height * 0.009, horizontal: 18),
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 26, 167, 30),
+                          color: colors.onPrimaryContainer,
                           borderRadius: BorderRadius.circular(10)),
                       child: const Text(
                         'Activo',

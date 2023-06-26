@@ -33,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Perfil',
           style: TextStyle(
@@ -74,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       padding: MaterialStatePropertyAll(
                         EdgeInsets.symmetric(
-                            vertical: size.height * 0.02,
+                            vertical: size.height * 0.018,
                             horizontal: size.width * .2),
                       ),
                     ),
@@ -92,10 +93,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     label: userProvider.uiStatus == UiStatus.loading
                         ? const Text('')
-                        : const Icon(Icons.swap_vert_sharp),
+                        : const Icon(Icons.wifi_protected_setup_outlined),
                     icon: userProvider.uiStatus == UiStatus.loading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text('Guardar'),
+                        ? const CircularProgressIndicator.adaptive(
+                            backgroundColor: Colors.white,
+                          )
+                        : const Text(
+                            'Guardar',
+                            style: TextStyle(
+                              fontSize: 15,
+                              letterSpacing: 3,
+                            ),
+                          ),
                   ),
                 ],
               ),

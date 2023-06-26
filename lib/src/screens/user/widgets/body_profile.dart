@@ -39,9 +39,9 @@ class _BodyProfileState extends State<BodyProfile> {
                   const SizedBox(width: 10),
                   userProvider.user?.rut != null &&
                           userProvider.user?.carrera != null
-                      ? const Icon(
-                          Icons.check_circle_outline,
-                          color: Color.fromARGB(255, 7, 229, 14),
+                      ? Icon(
+                          Icons.check_circle_rounded,
+                          color: colors.primary,
                         )
                       : const Icon(Icons.help_outline_rounded,
                           color: Color.fromARGB(255, 249, 163, 33))
