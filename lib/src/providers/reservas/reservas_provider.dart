@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/infrastructure/repositories/reserva_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:gym_app/src/providers/providers.dart';
 
 Future<dynamic> getCosas(String docID, String coleccion) async {
   print("doc: " + docID);
