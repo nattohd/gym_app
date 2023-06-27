@@ -11,8 +11,7 @@ class AuthRepository {
   OAuthProvider provider = OAuthProvider('microsoft.com');
 
   Future<String> setUserProfile(String uid, String rut, String carrera) async {
-    CollectionReference profiles =
-        FirebaseFirestore.instance.collection('profiles');
+    CollectionReference profiles = fireStore.collection('profiles');
 
     return profiles
         .doc(uid)
