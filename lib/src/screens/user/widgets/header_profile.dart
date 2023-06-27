@@ -9,7 +9,6 @@ class HeaderProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     final userProvider = context.watch<UserProvider>();
 
     return CustomPaint(

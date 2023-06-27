@@ -31,6 +31,10 @@ final appRouter = GoRouter(
       path: '/horas',
       builder: (context, state) => const QrGenerateScreen(),
     ),
+    GoRoute(
+      path: '/test',
+      builder: (context, state) => const TestScreen(),
+    ),
   ],
   redirect: (context, state) {
     final isGoingTo = state.matchedLocation;

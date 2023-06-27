@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gym_app/src/providers/reservas/reservas_provider.dart';
+import 'package:gym_app/src/providers/providers.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQRScreen extends StatefulWidget {
@@ -38,6 +39,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
+    final reservaProvider = context.watch<ReservaProvider>();
     return Scaffold(
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
@@ -57,6 +59,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
             MediaQuery.of(context).size.height < 400)
         ? 150.0
         : 300.0;
+
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
@@ -70,7 +73,9 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
+  void _onQRViewCreated(
+    QRViewController controller,
+  ) {
     setState(() {
       this.controller = controller;
     });
@@ -81,6 +86,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
         if (result != Barcode("", BarcodeFormat.aztec, []) && !showed) {
           showed == true;
           controller.pauseCamera();
+          // data = await reservaProvider.getListOfReservas(uid);
           data = await getCosas(result!.code as String, 'reservas');
           dia = data['dia'];
           horaEntrada = data['entrada'];
