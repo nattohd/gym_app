@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/infrastructure/repositories/reserva_repository.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gym_app/src/providers/providers.dart';
 
 Future<dynamic> getCosas(String docID, String coleccion) async {
   print("doc: " + docID);
@@ -20,35 +23,32 @@ Future<dynamic> getCosas(String docID, String coleccion) async {
 }
 
 class ReservaProvider extends ChangeNotifier {
-  List<ReservaModel> reservas = [];
   final ReservaRepository reservaRepository = ReservaRepository();
 
-  Future<void> getListOfReservas(String uid) async {
-    // uiStatus = UiStatus.loading;
-    // notifyListeners();
-    final response = await reservaRepository.getListOfReservas(uid);
-    reservas.addAll(response);
-    notifyListeners();
+  Stream<List<ReservaModel>> getListOfReservas(String uid) {
+    return reservaRepository.getListOfReservas(uid);
   }
 
-  Future<void> setConfirmarReservar(String idDoc) async {
-    final index = reservas.indexWhere((reserva) => reserva.idDoc == idDoc);
-    if (index != -1) {
-      final subscription = reservaRepository
-          .setConfirmarReserva(reservas[index])
-          .listen((updatedReserva) {
-        // Actualizamos la reserva en la lista
-        reservas[index] = updatedReserva;
-        notifyListeners();
-      }, onError: (error) {
-        throw Exception('No se encontró ninguna reserva con idDoc: $idDoc');
-      });
+  // Future<void> getListOfReservas(String uid) async {
+  //   // uiStatus = UiStatus.loading;
+  //   // notifyListeners();
+  //   final response = await reservaRepository.getListOfReservas(uid);
+  //   reservas.clear();
+  //   reservas.addAll(response);
+  //   notifyListeners();
+  // }
 
-      // Don't forget to cancel the subscription when the provider is disposed
-      // subscription.cancel();
-    } else {
-      throw Exception('No se encontró ninguna reserva con idDoc: $idDoc');
-    }
+  Future<ReservaModel> setConfirmarReservar(String idDoc) async {
+    final response = await reservaRepository.setConfirmarReserva(idDoc);
+    print(response);
+    notifyListeners();
+    return response;
+  }
+
+  Future<void> createNewReserva(ReservaModel newReserva) async {
+    final response = await reservaRepository.creteNewReserva(newReserva);
+    print(response);
+    notifyListeners();
   }
   // Future<void> setConfirmarReservar(String idDoc) async {
   //   final index = reservas.indexWhere((reserva) => reserva.idDoc == idDoc);

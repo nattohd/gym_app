@@ -7,12 +7,11 @@ class ReservaRepository {
   final FirebaseFirestore fireStore =
       FirebaseFirestore.instanceFor(app: firebaseService.firebaseApp);
 
-  Future<List<ReservaModel>> getListOfReservas(String uid) async {
+  Stream<List<ReservaModel>> getListOfReservas(String uid) {
     CollectionReference reservas = fireStore.collection('reservas');
 
-    return reservas.where('uid', isEqualTo: uid).get().then(
-        (QuerySnapshot querySnapshot) {
-      return querySnapshot.docs.map((doc) {
+    return reservas.where('uid', isEqualTo: uid).snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
         final data = doc.data();
         if (data != null) {
           return ReservaModel.fromFirestore(data as Map<String, dynamic>)
@@ -21,45 +20,46 @@ class ReservaRepository {
           throw Exception('No data found for document with ID: ${doc.id}');
         }
       }).toList();
-    }).catchError(
-        (error) => throw Exception('Error al obtener las reservas: $error'));
-  }
-
-  Stream<ReservaModel> setConfirmarReserva(ReservaModel reservaModel) {
-    CollectionReference reservas = fireStore.collection('reservas');
-
-    final controller = StreamController<ReservaModel>();
-
-    reservas.doc(reservaModel.idDoc).update({
-      'confirmada': true,
-    }).then((value) {
-      print('Reserva confirmada');
-      reservaModel.confirmarReserva();
-      controller.sink.add(reservaModel);
-      controller.close();
-    }).catchError((error) {
-      controller.addError(Exception('Error al confirmar la reserva: $error'));
-      controller.close();
     });
-
-    // Devolvemos el stream
-    return controller.stream;
   }
 
-  // Future<ReservaModel> setConfirmarReserva(ReservaModel reservaModel) async {
+  // Future<List<ReservaModel>> getListOfReservas(String uid) async {
   //   CollectionReference reservas = fireStore.collection('reservas');
 
-  //   return reservas.doc(reservaModel.idDoc).update({
-  //     'confirmada': true,
-  //   }).then((value) {
-  //     print('Reserva confirmada');
-  //     reservaModel.confirmarReserva();
-  //     return reservaModel;
+  //   return reservas.where('uid', isEqualTo: uid).get().then(
+  //       (QuerySnapshot querySnapshot) {
+  //     return querySnapshot.docs.map((doc) {
+  //       final data = doc.data();
+  //       if (data != null) {
+  //         return ReservaModel.fromFirestore(data as Map<String, dynamic>)
+  //           ..idDoc = doc.id;
+  //       } else {
+  //         throw Exception('No data found for document with ID: ${doc.id}');
+  //       }
+  //     }).toList();
   //   }).catchError(
-  //       (error) => throw Exception('Error al confirmar la reserva: $error'));
+  //       (error) => throw Exception('Error al obtener las reservas: $error'));
   // }
 
-  Future<ReservaModel> creteNewReserva(ReservaModel newReserva) async {
+  Future<ReservaModel> setConfirmarReserva(String idDoc) async {
+    CollectionReference reservas = fireStore.collection('reservas');
+
+    return reservas.doc(idDoc).update({
+      'confirmada': true,
+    }).then((value) async {
+      final doc = await reservas.doc(idDoc).get();
+      final data = doc.data();
+      if (data != null) {
+        return ReservaModel.fromFirestore(data as Map<String, dynamic>)
+          ..idDoc = doc.id;
+      } else {
+        throw Exception('No data found for document with ID: $idDoc');
+      }
+    }).catchError(
+        (error) => throw Exception('Error al confirmar la reserva: $error'));
+  }
+
+  Future<String> creteNewReserva(ReservaModel newReserva) async {
     CollectionReference reservas = fireStore.collection('reservas');
 
     return reservas.add({
@@ -72,18 +72,7 @@ class ReservaRepository {
       'motivo': newReserva.motivo,
       'fecha': newReserva.fecha,
     }).then((DocumentReference document) {
-      return ReservaModel(
-        idDoc: document.id,
-        bloque: newReserva.bloque,
-        confirmada: newReserva.confirmada,
-        dia: newReserva.dia,
-        entrada: newReserva.entrada,
-        salida: newReserva.salida,
-        uid: newReserva.uid,
-        motivo: newReserva.motivo,
-        fecha: newReserva.fecha,
-      );
-    }).catchError(
-        (error) => throw Exception('Error al crear la reserva: $error'));
+      return 'Reserva Creada correctamente';
+    }).catchError((error) => 'Error al crear la reserva: $error');
   }
 }

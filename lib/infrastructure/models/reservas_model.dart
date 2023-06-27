@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ReservaModel {
   String? idDoc;
   int bloque;
@@ -31,7 +33,7 @@ class ReservaModel {
       salida: reserva['salida'],
       uid: reserva['uid'],
       motivo: reserva['motivo'],
-      fecha: reserva['fecha'],
+      fecha: (reserva['fecha'] as Timestamp).toDate(),
     );
   }
 
