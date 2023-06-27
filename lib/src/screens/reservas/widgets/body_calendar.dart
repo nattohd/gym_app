@@ -35,7 +35,9 @@ class BodyCalendar extends StatelessWidget {
               ),
               Expanded(
                 child: GrillaCalendar(
-                    heightGrilla: parentHeight / 8, widthGrilla: 0.18),
+                  heightGrilla: parentHeight / 8,
+                  widthGrilla: 0.18,
+                ),
               ),
             ],
           );

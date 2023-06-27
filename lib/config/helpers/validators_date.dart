@@ -93,6 +93,35 @@ String processDay(int dia) {
   return diaFinal;
 }
 
+int processDayLetra(String dia) {
+  int diaFinal = 0;
+
+  switch (dia) {
+    case 'Lunes':
+      diaFinal = 0;
+      break;
+    case 'Martes':
+      diaFinal = 1;
+      break;
+    case 'Miercoles':
+      diaFinal = 2;
+      break;
+    case 'Jueves':
+      diaFinal = 3;
+      break;
+    case 'Viernes':
+      diaFinal = 4;
+      break;
+    case 'Sabado':
+      diaFinal = 5;
+      break;
+    case 'Domingo':
+      diaFinal = 6;
+      break;
+  }
+  return diaFinal;
+}
+
 List<dynamic>? getHour(int bloques) {
   List<dynamic>? entradaSalida = [];
   hours.map((hour) {
@@ -171,3 +200,19 @@ String dateReservation(String diaReservaTest) {
   }
   return fechaReserva;
 }
+
+List<int> dateReserved(int bloque, int dia) {
+  List<int> reserved = [];
+
+  reserved = [bloque, dia];
+
+  //El resultado es: reserved = [0, 3] bloques de la grilla
+
+  return reserved;
+}
+
+
+// 'Autorizado' 
+// 'Reservado'
+// 'Denegado'
+// 'Eliminando'

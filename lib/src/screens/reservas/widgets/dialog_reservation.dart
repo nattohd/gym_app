@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
 
 class DialogReservation extends StatelessWidget {
@@ -328,6 +329,7 @@ class DialogReservation extends StatelessWidget {
                       child: const Text('Cerrar'),
                       onPressed: () {
                         Navigator.of(context).pop();
+                        //enviar los datos para realizar la reserva
                       },
                     ),
                   ),
@@ -336,101 +338,266 @@ class DialogReservation extends StatelessWidget {
               //fin tercera pagina
             ],
           )
-        : AlertDialog(
-            content: SingleChildScrollView(
-              child: IntrinsicWidth(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: size.width * 0.45,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            offset: const Offset(1, 1),
-                            blurRadius: 8,
-                            spreadRadius: 10,
+        : acceso == 'Denegado'
+            ? AlertDialog(
+                content: SingleChildScrollView(
+                  child: IntrinsicWidth(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: size.width * 0.45,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                offset: const Offset(1, 1),
+                                blurRadius: 8,
+                                spreadRadius: 10,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              'assets/images/denied.png',
-                              height: size.width * 0.25,
-                              width: size.width * 0.25,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: accessReservation[0] == diaReserva
-                          ? size.width * 0.48
-                          : size.width * 0.36,
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: Center(
-                              child: Text(
-                                'Reserva Denegada',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Image.asset(
+                                  'assets/images/denied.png',
+                                  height: size.width * 0.25,
+                                  width: size.width * 0.25,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: Center(
-                              child: Text(
-                                'Recuerda que para solicitar una reserva se debe realizar con un dia de anticipacion',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  // fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          if (accessReservation[0] == diaReserva)
-                            const Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Center(
-                                child: Text(
-                                  'Si desea inscribirse el mismo dia queda a criterio del profesor a cargo',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
+                        ),
+                        SizedBox(
+                          height: accessReservation[0] == diaReserva
+                              ? size.width * 0.48
+                              : size.width * 0.36,
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(top: 20),
+                                child: Center(
+                                  child: Text(
+                                    'Reserva Denegada',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            )
-                        ],
+                              const Padding(
+                                padding: EdgeInsets.only(top: 20),
+                                child: Center(
+                                  child: Text(
+                                    'Recuerda que para solicitar una reserva se debe realizar con un dia de anticipacion',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              if (accessReservation[0] == diaReserva)
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 15),
+                                  child: Center(
+                                    child: Text(
+                                      'Si desea inscribirse el mismo dia queda a criterio del que se encuentre a cargo',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    child: const Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            : acceso == 'Reservado'
+                ? AlertDialog(
+                    content: SingleChildScrollView(
+                      child: IntrinsicWidth(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: size.width * 0.45,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    offset: const Offset(1, 1),
+                                    blurRadius: 8,
+                                    spreadRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Image.asset(
+                                      'assets/images/denied.png',
+                                      height: size.width * 0.25,
+                                      width: size.width * 0.25,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: accessReservation[0] == diaReserva
+                                  ? size.width * 0.48
+                                  : size.width * 0.31,
+                              width: double.infinity,
+                              child: const Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Reservacion Denegada',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Recuerda que solo puedes reservar un bloque',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                child: const Text('Cerrar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
+                    actions: [
+                      TextButton(
+                        child: const Text('Cerrar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  )
+                : AlertDialog(
+                    content: SingleChildScrollView(
+                      child: IntrinsicWidth(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: size.width * 0.45,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    offset: const Offset(1, 1),
+                                    blurRadius: 8,
+                                    spreadRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              child: const Stack(
+                                children: [
+                                  Center(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.circleQuestion,
+                                      color: Colors.white,
+                                      size: 80,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: accessReservation[0] == diaReserva
+                                  ? size.width * 0.48
+                                  : size.width * 0.31,
+                              width: double.infinity,
+                              child: const Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Eliminando..',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Se encuentra seguro que desea eliminar esta reserva',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text('Cerrar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
   }
 }
