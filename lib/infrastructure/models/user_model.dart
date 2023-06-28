@@ -32,7 +32,7 @@ class UserModel {
       uid: user.uid,
       email: user.email!,
       phone: user.phoneNumber ?? 'No definido',
-      displayName: user.displayName ?? 'No definido',
+      displayName: user.displayName ?? 'Usuario Administrador',
       rut: profile?['rut'],
       carrera: profile?['carrera'],
     );

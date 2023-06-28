@@ -60,12 +60,12 @@ class _TestScreenState extends State<TestScreen> {
             onPressed: () async {
               DateTime now = DateTime.now();
               final newReserva = ReservaModel(
-                bloque: 1,
+                bloque: 4,
                 confirmada: false,
-                dia: 'Martes',
+                dia: 'Miercoles',
                 entrada: '10:55',
                 salida: '12:05',
-                uid: userProvider.user!.uid,
+                uid: '0q0OlxNkvfU0YFJFSJ6vTusbRQi2',
                 motivo: 'Recuperativo',
                 fecha: DateTime(now.year, now.month, now.day),
               );
