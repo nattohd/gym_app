@@ -1,3 +1,5 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 List<Map<String, dynamic>> hours = [
   {
     'entrada': '09:35 AM',
@@ -36,16 +38,6 @@ List<Map<String, dynamic>> hours = [
   },
 ];
 
-List<Map<String, dynamic>> reservation = [
-  {
-    'id': 1,
-    'user_id': 3,
-    'bloque': 3,
-    'dia': 2,
-    'proposito': 'Entrenar',
-  },
-];
-
 List<Map<String, dynamic>> validatorReservation = [
   {
     'diaActual': 'Lunes',
@@ -74,5 +66,20 @@ List<Map<String, dynamic>> validatorReservation = [
   {
     'diaActual': 'Domingo',
     'diaReserva': 'Lunes',
+  },
+];
+
+List<Map<String, dynamic>> optionesProposito = [
+  {
+    'tipoProposito': 'Clases Recuperativas',
+    'icono': const FaIcon(FontAwesomeIcons.arrowRotateLeft),
+  },
+  {
+    'tipoProposito': 'Entrenamiento',
+    'icono': const FaIcon(FontAwesomeIcons.dumbbell),
+  },
+  {
+    'tipoProposito': 'Clases Grupales',
+    'icono': const FaIcon(FontAwesomeIcons.personChalkboard),
   },
 ];

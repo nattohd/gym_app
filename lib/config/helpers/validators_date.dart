@@ -93,6 +93,35 @@ String processDay(int dia) {
   return diaFinal;
 }
 
+int processDayLetra(String dia) {
+  int diaFinal = 0;
+
+  switch (dia) {
+    case 'Lunes':
+      diaFinal = 0;
+      break;
+    case 'Martes':
+      diaFinal = 1;
+      break;
+    case 'Miercoles':
+      diaFinal = 2;
+      break;
+    case 'Jueves':
+      diaFinal = 3;
+      break;
+    case 'Viernes':
+      diaFinal = 4;
+      break;
+    case 'Sabado':
+      diaFinal = 5;
+      break;
+    case 'Domingo':
+      diaFinal = 6;
+      break;
+  }
+  return diaFinal;
+}
+
 List<dynamic>? getHour(int bloques) {
   List<dynamic>? entradaSalida = [];
   hours.map((hour) {
@@ -171,3 +200,12 @@ String dateReservation(String diaReservaTest) {
   }
   return fechaReserva;
 }
+
+
+
+
+// onPressed: () {
+//                         shouldSkipPage = false;
+//                         scrollToPage(2);
+                        
+//                       },

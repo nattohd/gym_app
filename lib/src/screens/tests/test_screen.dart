@@ -34,6 +34,7 @@ class _TestScreenState extends State<TestScreen> {
                       color: Colors.blue,
                       child: Column(
                         children: [
+                          Text(e.bloque.toString()),
                           Text(e.dia),
                           Text(e.entrada),
                           Text(e.salida),
@@ -62,12 +63,12 @@ class _TestScreenState extends State<TestScreen> {
               final newReserva = ReservaModel(
                 bloque: 4,
                 confirmada: false,
-                dia: 'Miercoles',
+                dia: 'Martes',
                 entrada: '10:55',
                 salida: '12:05',
                 uid: '0q0OlxNkvfU0YFJFSJ6vTusbRQi2',
                 motivo: 'Recuperativo',
-                fecha: DateTime(now.year, now.month, now.day),
+                fecha: '11/11/1111',
               );
               await reservaProvider.createNewReserva(newReserva);
             },

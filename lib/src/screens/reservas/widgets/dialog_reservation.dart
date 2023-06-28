@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
+import 'package:gym_app/infrastructure/models/reservas_model.dart';
+import 'package:gym_app/src/providers/reservas/reservas_provider.dart';
+import 'package:gym_app/src/providers/user/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:gym_app/src/shared/data/semana_data.dart';
 
-class DialogReservation extends StatelessWidget {
+class DialogReservation extends StatefulWidget {
   final int bloque, dia;
   final String acceso;
 
@@ -12,14 +18,21 @@ class DialogReservation extends StatelessWidget {
       required this.acceso});
 
   @override
+  State<DialogReservation> createState() => _DialogReservationState();
+}
+
+class _DialogReservationState extends State<DialogReservation> {
+  @override
   Widget build(BuildContext context) {
+    final reservaProvider = context.watch<ReservaProvider>();
+    final userProvider = context.watch<UserProvider>();
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
-    final int bloqueFinal = bloque + 1;
-    String diaReserva = processDay(dia);
+    final int bloqueFinal = widget.bloque + 1;
+    String diaReserva = processDay(widget.dia);
     String diaReservaTest = diaReserva;
     diaReservaTest = diaReservaTest.substring(0, 2);
-    List<dynamic>? horarioBloque = getHour(bloque);
+    List<dynamic>? horarioBloque = getHour(widget.bloque);
     String entradaBloque = '';
     String salidaBloque = '';
     if (horarioBloque != null && horarioBloque.isNotEmpty) {
@@ -34,6 +47,7 @@ class DialogReservation extends StatelessWidget {
     PageController pageController = PageController(initialPage: 0);
     bool shouldSkipPage = true;
     List<String> accessReservation = getValidatorReservation();
+    String selectedOption = '';
 
     void scrollToPage(int pageNumber) {
       pageController.animateToPage(
@@ -43,7 +57,7 @@ class DialogReservation extends StatelessWidget {
       );
     }
 
-    return acceso == 'Autorizado'
+    return widget.acceso == 'Autorizado'
         ? PageView(
             controller: pageController,
             physics: const NeverScrollableScrollPhysics(),
@@ -157,6 +171,46 @@ class DialogReservation extends StatelessWidget {
                             ),
                           ),
                         ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 5),
+                          child: Text(
+                            '6. Proposito:',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 7),
+                          child: DropdownButtonFormField(
+                            hint: const Text('Seleccione una opcion'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            items: optionesProposito.map((proposito) {
+                              return DropdownMenuItem(
+                                value: proposito,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    proposito['icono'],
+                                    Text(proposito['tipoProposito']),
+                                    const SizedBox(),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedOption = value?['tipoProposito'];
+                              });
+                            },
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -172,9 +226,20 @@ class DialogReservation extends StatelessWidget {
                     height: size.width * 0.1,
                     width: size.width * 0.30,
                     child: FloatingActionButton(
-                      onPressed: () {
+                      onPressed: () async {
                         shouldSkipPage = false;
                         scrollToPage(2);
+                        final newReserva = ReservaModel(
+                          bloque: bloqueFinal,
+                          confirmada: false,
+                          dia: diaReserva,
+                          entrada: entradaBloque,
+                          salida: salidaBloque,
+                          uid: userProvider.user!.uid,
+                          motivo: selectedOption,
+                          fecha: fechaActual!,
+                        );
+                        await reservaProvider.createNewReserva(newReserva);
                       },
                       backgroundColor: colors.primary,
                       child: const Text(
@@ -328,6 +393,7 @@ class DialogReservation extends StatelessWidget {
                       child: const Text('Cerrar'),
                       onPressed: () {
                         Navigator.of(context).pop();
+                        //enviar los datos para realizar la reserva
                       },
                     ),
                   ),
@@ -336,101 +402,281 @@ class DialogReservation extends StatelessWidget {
               //fin tercera pagina
             ],
           )
-        : AlertDialog(
-            content: SingleChildScrollView(
-              child: IntrinsicWidth(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: size.width * 0.45,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            offset: const Offset(1, 1),
-                            blurRadius: 8,
-                            spreadRadius: 10,
+        : widget.acceso == 'Denegado'
+            ? AlertDialog(
+                content: SingleChildScrollView(
+                  child: IntrinsicWidth(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: size.width * 0.45,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                offset: const Offset(1, 1),
+                                blurRadius: 8,
+                                spreadRadius: 10,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              'assets/images/denied.png',
-                              height: size.width * 0.25,
-                              width: size.width * 0.25,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: accessReservation[0] == diaReserva
-                          ? size.width * 0.48
-                          : size.width * 0.36,
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: Center(
-                              child: Text(
-                                'Reserva Denegada',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Image.asset(
+                                  'assets/images/denied.png',
+                                  height: size.width * 0.25,
+                                  width: size.width * 0.25,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: Center(
-                              child: Text(
-                                'Recuerda que para solicitar una reserva se debe realizar con un dia de anticipacion',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  // fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          if (accessReservation[0] == diaReserva)
-                            const Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Center(
-                                child: Text(
-                                  'Si desea inscribirse el mismo dia queda a criterio del profesor a cargo',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
+                        ),
+                        SizedBox(
+                          height: accessReservation[0] == diaReserva
+                              ? size.width * 0.48
+                              : size.width * 0.36,
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(top: 20),
+                                child: Center(
+                                  child: Text(
+                                    'Reserva Denegada',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            )
-                        ],
+                              const Padding(
+                                padding: EdgeInsets.only(top: 20),
+                                child: Center(
+                                  child: Text(
+                                    'Recuerda que para solicitar una reserva se debe realizar con un dia de anticipacion',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              if (accessReservation[0] == diaReserva)
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 15),
+                                  child: Center(
+                                    child: Text(
+                                      'Si desea inscribirse el mismo dia queda a criterio del que se encuentre a cargo',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    child: const Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            : widget.acceso == 'Reservado'
+                ? AlertDialog(
+                    content: SingleChildScrollView(
+                      child: IntrinsicWidth(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: size.width * 0.45,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    offset: const Offset(1, 1),
+                                    blurRadius: 8,
+                                    spreadRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Image.asset(
+                                      'assets/images/denied.png',
+                                      height: size.width * 0.25,
+                                      width: size.width * 0.25,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: accessReservation[0] == diaReserva
+                                  ? size.width * 0.48
+                                  : size.width * 0.31,
+                              width: double.infinity,
+                              child: const Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Reservacion Denegada',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Recuerda que solo puedes reservar un bloque',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                child: const Text('Cerrar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
+                    actions: [
+                      TextButton(
+                        child: const Text('Cerrar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  )
+                : AlertDialog(
+                    content: SingleChildScrollView(
+                      child: IntrinsicWidth(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: size.width * 0.45,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    offset: const Offset(1, 1),
+                                    blurRadius: 8,
+                                    spreadRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              child: const Stack(
+                                children: [
+                                  Center(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.circleQuestion,
+                                      color: Colors.white,
+                                      size: 80,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: accessReservation[0] == diaReserva
+                                  ? size.width * 0.48
+                                  : size.width * 0.31,
+                              width: double.infinity,
+                              child: const Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Eliminando..',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        'Se encuentra seguro que desea eliminar esta reserva',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text('Cerrar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      SizedBox(
+                        height: size.width * 0.1,
+                        width: size.width * 0.30,
+                        child: FloatingActionButton(
+                          onPressed: () {},
+                          backgroundColor: colors.primary,
+                          child: const Text(
+                            'Confirmar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
   }
 }
