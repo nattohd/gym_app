@@ -201,18 +201,11 @@ String dateReservation(String diaReservaTest) {
   return fechaReserva;
 }
 
-List<int> dateReserved(int bloque, int dia) {
-  List<int> reserved = [];
-
-  reserved = [bloque, dia];
-
-  //El resultado es: reserved = [0, 3] bloques de la grilla
-
-  return reserved;
-}
 
 
-// 'Autorizado' 
-// 'Reservado'
-// 'Denegado'
-// 'Eliminando'
+
+// onPressed: () {
+//                         shouldSkipPage = false;
+//                         scrollToPage(2);
+                        
+//                       },

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
+import 'package:gym_app/infrastructure/models/reservas_model.dart';
+import 'package:gym_app/src/providers/reservas/reservas_provider.dart';
+import 'package:gym_app/src/providers/user/user_provider.dart';
+import 'package:provider/provider.dart';
 
-class DialogReservation extends StatelessWidget {
+class DialogReservation extends StatefulWidget {
   final int bloque, dia;
   final String acceso;
 
@@ -13,14 +17,21 @@ class DialogReservation extends StatelessWidget {
       required this.acceso});
 
   @override
+  State<DialogReservation> createState() => _DialogReservationState();
+}
+
+class _DialogReservationState extends State<DialogReservation> {
+  @override
   Widget build(BuildContext context) {
+    final reservaProvider = context.watch<ReservaProvider>();
+    final userProvider = context.watch<UserProvider>();
     final colors = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
-    final int bloqueFinal = bloque + 1;
-    String diaReserva = processDay(dia);
+    final int bloqueFinal = widget.bloque + 1;
+    String diaReserva = processDay(widget.dia);
     String diaReservaTest = diaReserva;
     diaReservaTest = diaReservaTest.substring(0, 2);
-    List<dynamic>? horarioBloque = getHour(bloque);
+    List<dynamic>? horarioBloque = getHour(widget.bloque);
     String entradaBloque = '';
     String salidaBloque = '';
     if (horarioBloque != null && horarioBloque.isNotEmpty) {
@@ -44,7 +55,7 @@ class DialogReservation extends StatelessWidget {
       );
     }
 
-    return acceso == 'Autorizado'
+    return widget.acceso == 'Autorizado'
         ? PageView(
             controller: pageController,
             physics: const NeverScrollableScrollPhysics(),
@@ -173,9 +184,21 @@ class DialogReservation extends StatelessWidget {
                     height: size.width * 0.1,
                     width: size.width * 0.30,
                     child: FloatingActionButton(
-                      onPressed: () {
+                      onPressed: () async {
                         shouldSkipPage = false;
                         scrollToPage(2);
+                        DateTime now = DateTime.now();
+                        final newReserva = ReservaModel(
+                          bloque: 1,
+                          confirmada: false,
+                          dia: 'Martes',
+                          entrada: '10:55',
+                          salida: '12:05',
+                          uid: userProvider.user!.uid,
+                          motivo: 'Recuperativo',
+                          fecha: DateTime(now.year, now.month, now.day),
+                        );
+                        await reservaProvider.createNewReserva(newReserva);
                       },
                       backgroundColor: colors.primary,
                       child: const Text(
@@ -338,7 +361,7 @@ class DialogReservation extends StatelessWidget {
               //fin tercera pagina
             ],
           )
-        : acceso == 'Denegado'
+        : widget.acceso == 'Denegado'
             ? AlertDialog(
                 content: SingleChildScrollView(
                   child: IntrinsicWidth(
@@ -435,7 +458,7 @@ class DialogReservation extends StatelessWidget {
                   ),
                 ],
               )
-            : acceso == 'Reservado'
+            : widget.acceso == 'Reservado'
                 ? AlertDialog(
                     content: SingleChildScrollView(
                       child: IntrinsicWidth(

@@ -34,6 +34,7 @@ class _TestScreenState extends State<TestScreen> {
                       color: Colors.blue,
                       child: Column(
                         children: [
+                          Text(e.bloque.toString()),
                           Text(e.dia),
                           Text(e.entrada),
                           Text(e.salida),
