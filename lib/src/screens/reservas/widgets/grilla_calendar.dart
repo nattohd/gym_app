@@ -31,169 +31,311 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
     return StreamBuilder(
       stream: reservaProvider.getListOfReservas(userProvider.user!.uid),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const CircularProgressIndicator();
+        if (!snapshot.hasData) {}
         List<ReservaModel> reservas = snapshot.data ?? [];
-        return Column(
-          children: reservas.map((e) {
-            int bloqueFinal = e.bloque - 1;
-            String diaS = e.dia;
+        return reservas.isNotEmpty
+            ? Column(
+                children: reservas.map((e) {
+                  // String? idReserva = e.idDoc;
+                  int bloqueFinal = e.bloque - 1;
+                  String diaS = e.dia;
 
-            int diaFinal = processDayLetra(diaS);
+                  int diaFinal = processDayLetra(diaS);
 
-            return Column(
-              children: columnas.map((j) {
-                List<int> filas = List<int>.generate(5, (index) => index);
-                return Row(
-                  children: filas.map((i) {
-                    String diaReserva = processDay(i);
-                    diaReserva = deletAccent(diaReserva);
-                    return InkWell(
-                      splashColor: colors.primary.withOpacity(.1),
-                      hoverColor: colors.primary.withOpacity(.1),
-                      onTap: () {
-                        // print(j.toString() + " " + i.toString());
-                        // print(reservas);
-                        if (reservas.isEmpty) {
-                          if (accessReservation[1] == diaReserva) {
-                            i = i + 1;
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogReservation(
-                                    bloque: j, dia: i, acceso: 'Autorizado');
-                              },
-                              barrierDismissible: false,
-                            );
-                            i = i - 1;
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogReservation(
-                                    bloque: j, dia: i, acceso: 'Denegado');
-                              },
-                              barrierDismissible: false,
-                            );
-                          }
-                        } else {
-                          if (accessReservation[1] == diaReserva) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogReservation(
-                                    bloque: j, dia: i, acceso: 'Reservado');
-                              },
-                              barrierDismissible: false,
-                            );
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogReservation(
-                                    bloque: j, dia: i, acceso: 'Denegado');
-                              },
-                              barrierDismissible: false,
-                            );
-                          }
-                        }
-                      },
-                      onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DialogReservation(
-                                bloque: j, dia: i, acceso: 'Eliminando');
-                          },
-                          barrierDismissible: false,
-                        );
-                      },
-                      child: Container(
-                        width: size.width * 0.85 / 5,
-                        height: widget.heightGrilla,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: colors.primary,
-                            width: .3,
-                          ),
-                          color: accessReservation[1] != diaReserva
-                              ? Colors.blueGrey.withOpacity(.2)
-                              : Colors.transparent,
-                        ),
-                        child: accessReservation[1] != diaReserva
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  accessReservation[0] == diaReserva
-                                      ? Column(
-                                          children: [
-                                            FaIcon(
-                                              FontAwesomeIcons.circleQuestion,
-                                              color: colors.primary,
-                                            ),
-                                            Text(
-                                              'consultar',
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                color: colors.primary,
-                                              ),
-                                            ),
-                                          ],
+                  return Column(
+                    children: columnas.map((j) {
+                      List<int> filas = List<int>.generate(5, (index) => index);
+                      return Row(
+                        children: filas.map((i) {
+                          String diaReserva = processDay(i);
+                          diaReserva = deletAccent(diaReserva);
+                          return InkWell(
+                            splashColor: colors.primary.withOpacity(.1),
+                            hoverColor: colors.primary.withOpacity(.1),
+                            onTap: () {
+                              // print(j.toString() + " " + i.toString());
+                              // print(idReserva);
+                              if (reservas.isEmpty) {
+                                if (accessReservation[1] == diaReserva) {
+                                  i = i + 1;
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DialogReservation(
+                                          bloque: j,
+                                          dia: i,
+                                          acceso: 'Autorizado');
+                                    },
+                                    barrierDismissible: false,
+                                  );
+                                  i = i - 1;
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DialogReservation(
+                                          bloque: j,
+                                          dia: i,
+                                          acceso: 'Denegado');
+                                    },
+                                    barrierDismissible: false,
+                                  );
+                                }
+                              } else {
+                                if (accessReservation[1] == diaReserva) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DialogReservation(
+                                          bloque: j,
+                                          dia: i,
+                                          acceso: 'Reservado');
+                                    },
+                                    barrierDismissible: false,
+                                  );
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DialogReservation(
+                                          bloque: j,
+                                          dia: i,
+                                          acceso: 'Denegado');
+                                    },
+                                    barrierDismissible: false,
+                                  );
+                                }
+                              }
+                            },
+                            onLongPress: () {
+                              reservas.isEmpty
+                                  ? null
+                                  : bloqueFinal == j && diaFinal == i
+                                      ? showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return DialogReservation(
+                                                bloque: j,
+                                                dia: i,
+                                                acceso: 'Eliminando');
+                                          },
+                                          barrierDismissible: false,
                                         )
-                                      : Column(
-                                          children: [
-                                            Icon(Icons.lock_clock_outlined,
-                                                color: colors.primary),
-                                            Text(
-                                              'Bloqueado',
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                color: colors.primary,
+                                      : null;
+                            },
+                            child: Container(
+                              width: size.width * 0.85 / 5,
+                              height: widget.heightGrilla,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: colors.primary,
+                                  width: .3,
+                                ),
+                                color: accessReservation[1] != diaReserva
+                                    ? Colors.blueGrey.withOpacity(.2)
+                                    : Colors.transparent,
+                              ),
+                              child: accessReservation[1] != diaReserva
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        accessReservation[0] == diaReserva
+                                            ? Column(
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons
+                                                        .circleQuestion,
+                                                    color: colors.primary,
+                                                  ),
+                                                  Text(
+                                                    'consultar',
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: colors.primary,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : Column(
+                                                children: [
+                                                  Icon(
+                                                      Icons.lock_clock_outlined,
+                                                      color: colors.primary),
+                                                  Text(
+                                                    'Bloqueado',
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: colors.primary,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
+                                      ],
+                                    )
+                                  : reservas.isEmpty
+                                      ? const SizedBox()
+                                      : bloqueFinal == j && diaFinal == i
+                                          ? const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons.circleCheck,
+                                                  color: Colors.green,
+                                                ),
+                                                Text(
+                                                  'reservado',
+                                                  style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : reservas.isNotEmpty
+                                              ? const Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    FaIcon(
+                                                      FontAwesomeIcons.slash,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ],
+                                                )
+                                              : const SizedBox(),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    }).toList(),
+                  );
+                }).toList(),
+              )
+            : Column(
+                children: columnas.map((j) {
+                  List<int> filas = List<int>.generate(5, (index) => index);
+                  return Row(
+                    children: filas.map((i) {
+                      String diaReserva = processDay(i);
+                      diaReserva = deletAccent(diaReserva);
+                      return InkWell(
+                        splashColor: colors.primary.withOpacity(.1),
+                        hoverColor: colors.primary.withOpacity(.1),
+                        onTap: () {
+                          if (reservas.isEmpty) {
+                            if (accessReservation[1] == diaReserva) {
+                              i = i + 1;
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogReservation(
+                                      bloque: j, dia: i, acceso: 'Autorizado');
+                                },
+                                barrierDismissible: false,
+                              );
+                              i = i - 1;
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogReservation(
+                                      bloque: j, dia: i, acceso: 'Denegado');
+                                },
+                                barrierDismissible: false,
+                              );
+                            }
+                          } else {
+                            if (accessReservation[1] == diaReserva) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogReservation(
+                                      bloque: j, dia: i, acceso: 'Reservado');
+                                },
+                                barrierDismissible: false,
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogReservation(
+                                      bloque: j, dia: i, acceso: 'Denegado');
+                                },
+                                barrierDismissible: false,
+                              );
+                            }
+                          }
+                        },
+                        onLongPress: () {
+                          reservas.isEmpty
+                              ? null
+                              : showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return DialogReservation(
+                                        bloque: j,
+                                        dia: i,
+                                        acceso: 'Eliminando');
+                                  },
+                                  barrierDismissible: false,
+                                );
+                        },
+                        child: Container(
+                            width: size.width * 0.85 / 5,
+                            height: widget.heightGrilla,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: colors.primary,
+                                width: .3,
+                              ),
+                              color: accessReservation[1] != diaReserva
+                                  ? Colors.blueGrey.withOpacity(.2)
+                                  : Colors.transparent,
+                            ),
+                            child: accessReservation[1] != diaReserva
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      accessReservation[0] == diaReserva
+                                          ? Column(
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons
+                                                      .circleQuestion,
+                                                  color: colors.primary,
+                                                ),
+                                                Text(
+                                                  'consultar',
+                                                  style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: colors.primary,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Column(
+                                              children: [
+                                                Icon(Icons.lock_clock_outlined,
+                                                    color: colors.primary),
+                                                Text(
+                                                  'Bloqueado',
+                                                  style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: colors.primary,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                ],
-                              )
-                            : reservas.isEmpty
-                                ? const SizedBox()
-                                : bloqueFinal == j && diaFinal == i
-                                    ? const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          FaIcon(
-                                            FontAwesomeIcons.circleCheck,
-                                            color: Colors.green,
-                                          ),
-                                          Text(
-                                            'reservado',
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.green,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : reservas.isNotEmpty
-                                        ? const Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.slash,
-                                                color: Colors.grey,
-                                              ),
-                                            ],
-                                          )
-                                        : const SizedBox(),
-                      ),
-                    );
-                  }).toList(),
-                );
-              }).toList(),
-            );
-          }).toList(),
-        );
+                                    ],
+                                  )
+                                : const SizedBox()),
+                      );
+                    }).toList(),
+                  );
+                }).toList(),
+              );
       },
     );
   }

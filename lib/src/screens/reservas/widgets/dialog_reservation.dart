@@ -5,6 +5,7 @@ import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/src/providers/reservas/reservas_provider.dart';
 import 'package:gym_app/src/providers/user/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:gym_app/src/shared/data/semana_data.dart';
 
 class DialogReservation extends StatefulWidget {
   final int bloque, dia;
@@ -46,6 +47,7 @@ class _DialogReservationState extends State<DialogReservation> {
     PageController pageController = PageController(initialPage: 0);
     bool shouldSkipPage = true;
     List<String> accessReservation = getValidatorReservation();
+    String selectedOption = '';
 
     void scrollToPage(int pageNumber) {
       pageController.animateToPage(
@@ -169,6 +171,46 @@ class _DialogReservationState extends State<DialogReservation> {
                             ),
                           ),
                         ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 5),
+                          child: Text(
+                            '6. Proposito:',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 7),
+                          child: DropdownButtonFormField(
+                            hint: const Text('Seleccione una opcion'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            items: optionesProposito.map((proposito) {
+                              return DropdownMenuItem(
+                                value: proposito,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    proposito['icono'],
+                                    Text(proposito['tipoProposito']),
+                                    const SizedBox(),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedOption = value?['tipoProposito'];
+                              });
+                            },
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -187,16 +229,15 @@ class _DialogReservationState extends State<DialogReservation> {
                       onPressed: () async {
                         shouldSkipPage = false;
                         scrollToPage(2);
-                        DateTime now = DateTime.now();
                         final newReserva = ReservaModel(
-                          bloque: 1,
+                          bloque: bloqueFinal,
                           confirmada: false,
-                          dia: 'Martes',
-                          entrada: '10:55',
-                          salida: '12:05',
+                          dia: diaReserva,
+                          entrada: entradaBloque,
+                          salida: salidaBloque,
                           uid: userProvider.user!.uid,
-                          motivo: 'Recuperativo',
-                          fecha: DateTime(now.year, now.month, now.day),
+                          motivo: selectedOption,
+                          fecha: fechaActual!,
                         );
                         await reservaProvider.createNewReserva(newReserva);
                       },
@@ -620,6 +661,21 @@ class _DialogReservationState extends State<DialogReservation> {
                           Navigator.of(context).pop();
                         },
                       ),
+                      SizedBox(
+                        height: size.width * 0.1,
+                        width: size.width * 0.30,
+                        child: FloatingActionButton(
+                          onPressed: () {},
+                          backgroundColor: colors.primary,
+                          child: const Text(
+                            'Confirmar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   );
   }

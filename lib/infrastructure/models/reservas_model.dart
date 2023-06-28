@@ -9,7 +9,7 @@ class ReservaModel {
   String salida;
   String uid;
   String motivo;
-  DateTime fecha;
+  String fecha;
 
   ReservaModel({
     this.idDoc,
@@ -33,7 +33,7 @@ class ReservaModel {
       salida: reserva['salida'],
       uid: reserva['uid'],
       motivo: reserva['motivo'],
-      fecha: (reserva['fecha'] as Timestamp).toDate(),
+      fecha: reserva['fecha'],
     );
   }
 
@@ -41,5 +41,18 @@ class ReservaModel {
     if (!confirmada) {
       confirmada = true;
     }
+  }
+}
+
+void eliminarReserva(String reservaId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection(
+            'reservas') // Reemplaza 'reservas' con el nombre de tu colección
+        .doc(reservaId)
+        .delete();
+    print('Reserva eliminada exitosamente');
+  } catch (error) {
+    print('Error al eliminar la reserva: $error');
   }
 }
