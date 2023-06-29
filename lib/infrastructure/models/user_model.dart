@@ -42,4 +42,8 @@ class UserModel {
     this.rut = rut;
     this.carrera = carrera;
   }
+
+  bool userHaveRequirements() {
+    return rut != null && carrera != null;
+  }
 }
