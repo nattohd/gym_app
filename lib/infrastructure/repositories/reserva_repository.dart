@@ -71,6 +71,7 @@ class ReservaRepository {
       'uid': newReserva.uid,
       'motivo': newReserva.motivo,
       'fecha': newReserva.fecha,
+      'createdAt': newReserva.createdAt,
     }).then((DocumentReference document) {
       return 'Reserva Creada correctamente';
     }).catchError((error) => 'Error al crear la reserva: $error');
