@@ -9,7 +9,8 @@ class ReservaModel {
   String salida;
   String uid;
   String motivo;
-  String fecha;
+  DateTime fecha;
+  DateTime createdAt;
 
   ReservaModel({
     this.idDoc,
@@ -21,6 +22,7 @@ class ReservaModel {
     required this.uid,
     required this.motivo,
     required this.fecha,
+    required this.createdAt,
   });
 
   factory ReservaModel.fromFirestore(Map<String, dynamic> reserva) {
@@ -33,7 +35,8 @@ class ReservaModel {
       salida: reserva['salida'],
       uid: reserva['uid'],
       motivo: reserva['motivo'],
-      fecha: reserva['fecha'],
+      fecha: (reserva['fecha'] as Timestamp).toDate(),
+      createdAt: (reserva['createdAt'] as Timestamp).toDate(),
     );
   }
 

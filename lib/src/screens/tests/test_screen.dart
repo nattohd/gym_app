@@ -60,6 +60,9 @@ class _TestScreenState extends State<TestScreen> {
             child: const Text('Crear reserva'),
             onPressed: () async {
               DateTime now = DateTime.now();
+              //Añadir dias
+              now.add(const Duration(days: 1));
+              DateTime fecha = DateTime(now.year, now.month, now.day);
               final newReserva = ReservaModel(
                 bloque: 4,
                 confirmada: false,
@@ -68,7 +71,8 @@ class _TestScreenState extends State<TestScreen> {
                 salida: '12:05',
                 uid: '0q0OlxNkvfU0YFJFSJ6vTusbRQi2',
                 motivo: 'Recuperativo',
-                fecha: '11/11/1111',
+                fecha: fecha,
+                createdAt: now,
               );
               await reservaProvider.createNewReserva(newReserva);
             },
