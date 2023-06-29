@@ -13,11 +13,11 @@ class QrGenerateScreen extends StatefulWidget {
 }
 
 class _QrGenerateScreenState extends State<QrGenerateScreen> {
-  late dynamic reserva;
   @override
   Widget build(BuildContext context) {
     final reservaProvider = context.watch<ReservaProvider>();
     final userProvider = context.watch<UserProvider>();
+    print(userProvider.user!.uid);
 
     final colors = Theme.of(context).colorScheme;
 
@@ -42,15 +42,21 @@ class _QrGenerateScreenState extends State<QrGenerateScreen> {
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(),
                 itemBuilder: (BuildContext context, int index) {
-                  reserva = reservas[index];
+                  final reserva = reservas[index];
 
                   return ListTile(
                     title: Text(reserva.dia),
-                    subtitle:
-                        Text('Hora: ${reserva.entrada}, UID: ${reserva.uid}}'),
-                    // onTap: () {
-                    //   showItemDetails(context, day, time, id);
-                    // },
+                    subtitle: Text(
+                        'Hora Entrada: ${reserva.entrada}, Hora Salida: ${reserva.salida}'),
+                    onTap: () {
+                      showItemDetails(context, reserva);
+                    },
+                    trailing: Container(
+                        height: 80,
+                        width: 40,
+                        color: reserva.confirmada == false
+                            ? Colors.red
+                            : Colors.blue),
                   );
                 },
               );
@@ -58,7 +64,7 @@ class _QrGenerateScreenState extends State<QrGenerateScreen> {
   }
 }
 
-void showItemDetails(BuildContext context, String day, String time, String id) {
+void showItemDetails(BuildContext context, ReservaModel reserva) {
   Size size = MediaQuery.of(context).size;
 
   showDialog(
@@ -74,11 +80,14 @@ void showItemDetails(BuildContext context, String day, String time, String id) {
               width: size.width,
               height: size.height * 0.3,
               child: QrImageView(
-                data: id,
+                data: reserva.idDoc!,
               ),
             ),
-            Text('Día: $day'),
-            Text('Hora: $time'),
+            Text('Día: ${reserva.dia}'),
+            Text('Motivo: ${reserva.motivo}'),
+            Text('Día: ${reserva.bloque}'),
+            Text('Hora entrada: ${reserva.entrada}'),
+            Text('Hora salida: ${reserva.salida}'),
           ],
         ),
         actions: [
