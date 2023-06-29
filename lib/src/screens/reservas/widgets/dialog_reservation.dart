@@ -234,17 +234,17 @@ class _DialogReservationState extends State<DialogReservation> {
                         // Martes -> Indice de columna "1"
                         //Usa: reservasProvider.diasSemanaFechaCompleta[ indice de la columna ]
                         //Para obtener la fecha, en formato DateTime y solucionar el error. :)
-                        final newReserva = ReservaModel(
-                          bloque: bloqueFinal,
-                          confirmada: false,
-                          dia: diaReserva,
-                          entrada: entradaBloque,
-                          salida: salidaBloque,
-                          uid: userProvider.user!.uid,
-                          motivo: selectedOption,
-                          fecha: fechaActual!,
-                        );
-                        await reservaProvider.createNewReserva(newReserva);
+                        // final newReserva = ReservaModel(
+                        //   bloque: bloqueFinal,
+                        //   confirmada: false,
+                        //   dia: diaReserva,
+                        //   entrada: entradaBloque,
+                        //   salida: salidaBloque,
+                        //   uid: userProvider.user!.uid,
+                        //   motivo: selectedOption,
+                        //   fecha: fechaActual!,
+                        // );
+                        // await reservaProvider.createNewReserva(newReserva);
                       },
                       backgroundColor: colors.primary,
                       child: const Text(
