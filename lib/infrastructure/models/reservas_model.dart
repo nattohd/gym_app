@@ -9,6 +9,7 @@ class ReservaModel {
   String salida;
   String uid;
   String motivo;
+  String? nameOfUser;
   DateTime fecha;
   DateTime createdAt;
 

@@ -32,8 +32,8 @@ class UserProvider extends ChangeNotifier {
   Future<void> setUserProfile(String rut, String carrera) async {
     uiStatus = UiStatus.loading;
     notifyListeners();
-    final response =
-        await authRepository.setUserProfile(user!.uid, rut, carrera);
+    final response = await authRepository.setUserProfile(
+        user!.uid, rut, carrera, user!.displayName);
     print(response);
     if (user != null) {
       user?.setProfileUser(rut, carrera);

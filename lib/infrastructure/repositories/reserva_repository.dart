@@ -10,7 +10,11 @@ class ReservaRepository {
   Stream<List<ReservaModel>> getListOfReservas(String uid) {
     CollectionReference reservas = fireStore.collection('reservas');
 
-    return reservas.where('uid', isEqualTo: uid).snapshots().map((snapshot) {
+    return reservas
+        .where('uid', isEqualTo: uid)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data();
         if (data != null) {
@@ -23,26 +27,9 @@ class ReservaRepository {
     });
   }
 
-  // Future<List<ReservaModel>> getListOfReservas(String uid) async {
-  //   CollectionReference reservas = fireStore.collection('reservas');
-
-  //   return reservas.where('uid', isEqualTo: uid).get().then(
-  //       (QuerySnapshot querySnapshot) {
-  //     return querySnapshot.docs.map((doc) {
-  //       final data = doc.data();
-  //       if (data != null) {
-  //         return ReservaModel.fromFirestore(data as Map<String, dynamic>)
-  //           ..idDoc = doc.id;
-  //       } else {
-  //         throw Exception('No data found for document with ID: ${doc.id}');
-  //       }
-  //     }).toList();
-  //   }).catchError(
-  //       (error) => throw Exception('Error al obtener las reservas: $error'));
-  // }
-
   Future<ReservaModel> setConfirmarReserva(String idDoc) async {
     CollectionReference reservas = fireStore.collection('reservas');
+    CollectionReference profiles = fireStore.collection('profiles');
 
     return reservas.doc(idDoc).update({
       'confirmada': true,
@@ -50,13 +37,36 @@ class ReservaRepository {
       final doc = await reservas.doc(idDoc).get();
       final data = doc.data();
       if (data != null) {
-        return ReservaModel.fromFirestore(data as Map<String, dynamic>)
-          ..idDoc = doc.id;
+        ReservaModel reserva =
+            ReservaModel.fromFirestore(data as Map<String, dynamic>)
+              ..idDoc = doc.id;
+        final nameOfUser = await profiles
+            .doc(reserva.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            final data = documentSnapshot.data() as Map<String, dynamic>;
+            return data['displayName'] as String;
+          }
+          return null;
+        });
+        reserva.nameOfUser = nameOfUser;
+        return reserva;
       } else {
         throw Exception('No data found for document with ID: $idDoc');
       }
     }).catchError(
         (error) => throw Exception('Error al confirmar la reserva: $error'));
+  }
+
+  Future<String> deleteReserva(String idDoc) async {
+    CollectionReference reservas = fireStore.collection('reservas');
+
+    return reservas
+        .doc(idDoc)
+        .delete()
+        .then((_) => 'Reserva eliminada correctamente.')
+        .catchError((error) => 'Error al eliminar la reserva: $error');
   }
 
   Future<String> creteNewReserva(ReservaModel newReserva) async {

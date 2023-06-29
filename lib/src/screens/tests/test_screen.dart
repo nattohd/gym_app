@@ -53,8 +53,7 @@ class _TestScreenState extends State<TestScreen> {
             child: const Text('Actualizar'),
             onPressed: () async {
               final reserva = await reservaProvider
-                  .setConfirmarReservar('giX2ckbg69FlhNDnTTOl');
-              print(reserva.idDoc);
+                  .setConfirmarReservar('GvjZ7fOX1bCs6Vq6jAnF');
             },
           ),
           FilledButton(

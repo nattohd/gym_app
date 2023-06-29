@@ -10,7 +10,8 @@ class AuthRepository {
       FirebaseFirestore.instanceFor(app: firebaseService.firebaseApp);
   OAuthProvider provider = OAuthProvider('microsoft.com');
 
-  Future<String> setUserProfile(String uid, String rut, String carrera) async {
+  Future<String> setUserProfile(
+      String uid, String rut, String carrera, String displayName) async {
     CollectionReference profiles = fireStore.collection('profiles');
 
     return profiles
@@ -18,6 +19,7 @@ class AuthRepository {
         .set({
           'rut': rut,
           'carrera': carrera,
+          'displayName': displayName,
         }, SetOptions(merge: true))
         .then((value) => 'Perfil actualizado correctamente')
         .catchError((error) => 'Error al actualizar tu perfil');
