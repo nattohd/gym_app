@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gym_app/infrastructure/models/reservas_model.dart';
@@ -57,9 +56,14 @@ class ReservaProvider extends ChangeNotifier {
 
   Future<ReservaModel> setConfirmarReservar(String idDoc) async {
     final response = await reservaRepository.setConfirmarReserva(idDoc);
-    print(response);
     notifyListeners();
     return response;
+  }
+
+  Future<void> deleteReserva(String idDoc) async {
+    final response = await reservaRepository.deleteReserva(idDoc);
+    print(response);
+    notifyListeners();
   }
 
   Future<void> createNewReserva(ReservaModel newReserva) async {

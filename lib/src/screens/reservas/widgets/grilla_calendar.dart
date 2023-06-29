@@ -170,7 +170,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                                           color:
                                                               colors.primary),
                                                       Text(
-                                                        'Bloqueado',
+                                                        'Bloqueado1',
                                                         style: TextStyle(
                                                           fontSize: 11,
                                                           color: colors.primary,
@@ -336,19 +336,38 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                                 ),
                                               ],
                                             )
-                                          : Column(
-                                              children: [
-                                                Icon(Icons.lock_clock_outlined,
-                                                    color: colors.primary),
-                                                Text(
-                                                  'Bloqueado',
-                                                  style: TextStyle(
-                                                    fontSize: 11,
-                                                    color: colors.primary,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                          : reservaProvider.diaActual <
+                                                  reservaProvider
+                                                      .diasSemanaSoloNumero[i]
+                                              ? Column(
+                                                  children: [
+                                                    Icon(
+                                                        Icons
+                                                            .lock_clock_outlined,
+                                                        color: colors.primary),
+                                                    Text(
+                                                      'Bloqueado1',
+                                                      style: TextStyle(
+                                                        fontSize: 11,
+                                                        color: colors.primary,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Column(
+                                                  children: [
+                                                    const Icon(Icons.lock,
+                                                        color: Colors.grey),
+                                                    Text(
+                                                      'Concluido',
+                                                      style: TextStyle(
+                                                        fontSize: 11,
+                                                        color: Colors.black
+                                                            .withOpacity(.5),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
                                     ],
                                   )
                                 : const SizedBox()),
