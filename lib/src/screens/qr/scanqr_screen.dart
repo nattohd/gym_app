@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'dart:html';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/src/providers/providers.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -15,11 +17,11 @@ class ScanQRScreen extends StatefulWidget {
 }
 
 class _ScanQRScreenState extends State<ScanQRScreen> {
+  ReservaProvider reservaProvider = ReservaProvider();
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool showed = false;
-  late Map data;
   late String dia;
   late String horaEntrada;
   late String horaSalida;
@@ -39,7 +41,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
-    final reservaProvider = context.watch<ReservaProvider>();
+
     return Scaffold(
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
@@ -86,12 +88,9 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
         if (result != Barcode("", BarcodeFormat.aztec, []) && !showed) {
           showed == true;
           controller.pauseCamera();
-          // data = await reservaProvider.getListOfReservas(uid);
-          data = await getCosas(result!.code as String, 'reservas');
-          dia = data['dia'];
-          horaEntrada = data['entrada'];
-          horaSalida = data['salida'];
-          bloque = data['bloque'];
+          ReservaModel data = await reservaProvider
+              .setConfirmarReservar(result!.code as String);
+
           // ignore: use_build_context_synchronously
           showDialog(
               context: context,
@@ -101,15 +100,17 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
                       height: 300,
                       child: Column(
                         children: [
-                          Text('Hora Inicio: $horaEntrada'),
-                          Text('Hora Termino: $horaSalida'),
-                          Text('Bloque: ${bloque.toString()}'),
+                          Center(child: Text('Renato Plaza')),
+                          Text('Hora Inicio: ${data.entrada}'),
+                          Text('Hora Termino: ${data.salida}'),
+                          Text('Bloque: ${data.bloque.toString()}'),
+                          Text(data.confirmadaToString()),
                         ],
                       ),
                     ),
                     actions: <Widget>[
                       TextButton(
-                        child: const Text('Salir'),
+                        child: const Text('CERRAR'),
                         onPressed: () {
                           Navigator.pop(context, 'Cancel');
                           controller.resumeCamera();

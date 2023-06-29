@@ -6,19 +6,10 @@ import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/infrastructure/repositories/reserva_repository.dart';
 import 'package:flutter/foundation.dart';
 
-Future<dynamic> getCosas(String docID, String coleccion) async {
-  print("doc: " + docID);
-  print("coleccion: " + coleccion);
-
+Future<dynamic> getReserva(String docID, String coleccion) async {
   CollectionReference col = FirebaseFirestore.instance.collection(coleccion);
-
-  print('coleccionnnnnnn:  $col');
-
   DocumentSnapshot snapshot = await col.doc(docID).get();
-  print(snapshot);
-
   var data = snapshot.data() as Map;
-  print('Data es: $data');
   return data;
 }
 
