@@ -22,8 +22,7 @@ class _TestScreenState extends State<TestScreen> {
       body: Column(
         children: [
           StreamBuilder(
-            stream: reservaProvider
-                .getListOfReservas('MYBRSOv8xMdIhqybiDk4X9TlEXJ3'),
+            stream: reservaProvider.getListOfReservas(userProvider.user!.uid),
             builder: (context, snapshot) {
               if (!snapshot.hasData) const CircularProgressIndicator();
               List<ReservaModel> reservas = snapshot.data ?? [];
@@ -69,7 +68,7 @@ class _TestScreenState extends State<TestScreen> {
                 dia: 'Viernes',
                 entrada: '10:55',
                 salida: '12:05',
-                uid: 'MYBRSOv8xMdIhqybiDk4X9TlEXJ3',
+                uid: userProvider.user!.uid,
                 motivo: 'Recuperativo',
                 fecha: fecha,
                 createdAt: now,
