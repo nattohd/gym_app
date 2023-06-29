@@ -45,17 +45,8 @@ class ReservaModel {
       confirmada = true;
     }
   }
-}
 
-void eliminarReserva(String reservaId) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection(
-            'reservas') // Reemplaza 'reservas' con el nombre de tu colección
-        .doc(reservaId)
-        .delete();
-    print('Reserva eliminada exitosamente');
-  } catch (error) {
-    print('Error al eliminar la reserva: $error');
+  String confirmadaToString() {
+    return confirmada ? 'Confirmada' : 'Por confirmar';
   }
 }
