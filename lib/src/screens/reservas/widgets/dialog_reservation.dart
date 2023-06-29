@@ -230,6 +230,8 @@ class _DialogReservationState extends State<DialogReservation> {
                         shouldSkipPage = false;
                         scrollToPage(2);
                         //PARA MANGINI LOCO
+                        // Lunes -> Indice de columna "0"
+                        // Martes -> Indice de columna "1"
                         //Usa: reservasProvider.diasSemanaFechaCompleta[ indice de la columna ]
                         //Para obtener la fecha, en formato DateTime y solucionar el error. :)
                         final newReserva = ReservaModel(
