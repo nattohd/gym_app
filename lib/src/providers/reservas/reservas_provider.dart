@@ -23,20 +23,22 @@ Future<dynamic> getCosas(String docID, String coleccion) async {
 }
 
 class ReservaProvider extends ChangeNotifier {
-  List<int> diasSemana = [];
+  List<int> diasSemanaSoloNumero = [];
+  List<DateTime> diasSemanaFechaCompleta = [];
   late int diaActual;
   final ReservaRepository reservaRepository = ReservaRepository();
 
-  void calcDiasSemana() {
+  void initCalcDiasSemana() {
     DateTime ahora = DateTime.now();
     DateTime primerDiaDeLaSemana =
         ahora.subtract(Duration(days: (ahora.weekday - 1)));
-    diasSemana.clear();
+    diasSemanaSoloNumero.clear();
     for (int i = 0; i < 7; i++) {
-      diasSemana.add(primerDiaDeLaSemana.add(Duration(days: i)).day);
+      diasSemanaSoloNumero.add(primerDiaDeLaSemana.add(Duration(days: i)).day);
     }
     notifyListeners();
     getDiaActual();
+    getFechasDiasDeLaSemana();
   }
 
   void getDiaActual() {
@@ -45,18 +47,22 @@ class ReservaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void getFechasDiasDeLaSemana() {
+    DateTime ahora = DateTime.now();
+    DateTime primerDiaDeLaSemana = DateTime(ahora.year, ahora.month, ahora.day)
+        .subtract(Duration(days: (ahora.weekday - 1)));
+
+    for (int i = 0; i < 7; i++) {
+      DateTime diaDeLaSemana = primerDiaDeLaSemana.add(Duration(days: i));
+      diasSemanaFechaCompleta.add(
+          DateTime(diaDeLaSemana.year, diaDeLaSemana.month, diaDeLaSemana.day));
+    }
+    notifyListeners();
+  }
+
   Stream<List<ReservaModel>> getListOfReservas(String uid) {
     return reservaRepository.getListOfReservas(uid);
   }
-
-  // Future<void> getListOfReservas(String uid) async {
-  //   // uiStatus = UiStatus.loading;
-  //   // notifyListeners();
-  //   final response = await reservaRepository.getListOfReservas(uid);
-  //   reservas.clear();
-  //   reservas.addAll(response);
-  //   notifyListeners();
-  // }
 
   Future<ReservaModel> setConfirmarReservar(String idDoc) async {
     final response = await reservaRepository.setConfirmarReserva(idDoc);
@@ -70,15 +76,4 @@ class ReservaProvider extends ChangeNotifier {
     print(response);
     notifyListeners();
   }
-  // Future<void> setConfirmarReservar(String idDoc) async {
-  //   final index = reservas.indexWhere((reserva) => reserva.idDoc == idDoc);
-  //   if (index != -1) {
-  //     final response =
-  //         await reservaRepository.setConfirmarReserva(reservas[index]);
-  //     reservas[index] = response;
-  //   } else {
-  //     throw Exception('No se encontró ninguna reserva con idDoc: $idDoc');
-  //   }
-  //   notifyListeners();
-  // }
 }

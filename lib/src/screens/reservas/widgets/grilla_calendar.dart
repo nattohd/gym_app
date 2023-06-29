@@ -131,7 +131,8 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                     ? accessReservation[0] == diaReserva
                                         ? Colors.blueGrey.withOpacity(.1)
                                         : reservaProvider.diaActual <
-                                                reservaProvider.diasSemana[i]
+                                                reservaProvider
+                                                    .diasSemanaSoloNumero[i]
                                             ? Colors.blueGrey.withOpacity(.2)
                                             : Colors.black.withOpacity(.1)
                                     : Colors.transparent,
@@ -160,7 +161,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                               )
                                             : reservaProvider.diaActual <
                                                     reservaProvider
-                                                        .diasSemana[i]
+                                                        .diasSemanaSoloNumero[i]
                                                 ? Column(
                                                     children: [
                                                       Icon(
