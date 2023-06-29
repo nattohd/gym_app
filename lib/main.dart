@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           create: (_) => UserProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => ReservaProvider(),
+          create: (_) => ReservaProvider()..calcDiasSemana(),
         ),
       ],
       child: MaterialApp.router(

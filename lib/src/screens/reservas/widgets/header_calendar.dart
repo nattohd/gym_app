@@ -73,8 +73,11 @@ class _HeaderCalendarState extends State<HeaderCalendar> {
                       day[0],
                       style: TextStyle(
                           fontSize: 15,
-                          color:
-                              day[1] == diaFix ? colors.primary : Colors.black,
+                          color: day[1] == diaFix
+                              ? colors.primary
+                              : int.parse(day[1]) < int.parse(diaFix)
+                                  ? Colors.grey
+                                  : Colors.black,
                           fontWeight: day[1] == diaFix
                               ? FontWeight.bold
                               : FontWeight.normal),
@@ -100,7 +103,9 @@ class _HeaderCalendarState extends State<HeaderCalendar> {
                               fontSize: 20,
                               color: day[1] == diaFix
                                   ? Colors.white
-                                  : const Color(0xff1a1c1e)),
+                                  : int.parse(day[1]) < int.parse(diaFix)
+                                      ? Colors.grey
+                                      : const Color(0xff1a1c1e)),
                         ),
                       ],
                     ),

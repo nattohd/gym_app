@@ -39,9 +39,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                   // String? idReserva = e.idDoc;
                   int bloqueFinal = e.bloque - 1;
                   String diaS = e.dia;
-
                   int diaFinal = processDayLetra(diaS);
-
                   return Column(
                     children: columnas.map((j) {
                       List<int> filas = List<int>.generate(5, (index) => index);
@@ -53,8 +51,6 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                             splashColor: colors.primary.withOpacity(.1),
                             hoverColor: colors.primary.withOpacity(.1),
                             onTap: () {
-                              // print(j.toString() + " " + i.toString());
-                              // print(idReserva);
                               if (reservas.isEmpty) {
                                 if (accessReservation[1] == diaReserva) {
                                   i = i + 1;
@@ -132,7 +128,12 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                   width: .3,
                                 ),
                                 color: accessReservation[1] != diaReserva
-                                    ? Colors.blueGrey.withOpacity(.2)
+                                    ? accessReservation[0] == diaReserva
+                                        ? Colors.blueGrey.withOpacity(.1)
+                                        : reservaProvider.diaActual <
+                                                reservaProvider.diasSemana[i]
+                                            ? Colors.blueGrey.withOpacity(.2)
+                                            : Colors.black.withOpacity(.1)
                                     : Colors.transparent,
                               ),
                               child: accessReservation[1] != diaReserva
@@ -149,7 +150,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                                     color: colors.primary,
                                                   ),
                                                   Text(
-                                                    'consultar',
+                                                    'Consultar',
                                                     style: TextStyle(
                                                       fontSize: 11,
                                                       color: colors.primary,
@@ -157,20 +158,39 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                                   ),
                                                 ],
                                               )
-                                            : Column(
-                                                children: [
-                                                  Icon(
-                                                      Icons.lock_clock_outlined,
-                                                      color: colors.primary),
-                                                  Text(
-                                                    'Bloqueado',
-                                                    style: TextStyle(
-                                                      fontSize: 11,
-                                                      color: colors.primary,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                            : reservaProvider.diaActual <
+                                                    reservaProvider
+                                                        .diasSemana[i]
+                                                ? Column(
+                                                    children: [
+                                                      Icon(
+                                                          Icons
+                                                              .lock_clock_outlined,
+                                                          color:
+                                                              colors.primary),
+                                                      Text(
+                                                        'Bloqueado',
+                                                        style: TextStyle(
+                                                          fontSize: 11,
+                                                          color: colors.primary,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Column(
+                                                    children: [
+                                                      const Icon(Icons.lock,
+                                                          color: Colors.grey),
+                                                      Text(
+                                                        'Concluido',
+                                                        style: TextStyle(
+                                                          fontSize: 11,
+                                                          color: Colors.black
+                                                              .withOpacity(.5),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
                                       ],
                                     )
                                   : reservas.isEmpty
@@ -185,7 +205,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                                   color: Colors.green,
                                                 ),
                                                 Text(
-                                                  'reservado',
+                                                  'Reservado',
                                                   style: TextStyle(
                                                     fontSize: 11,
                                                     color: Colors.green,
@@ -307,7 +327,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                                                   color: colors.primary,
                                                 ),
                                                 Text(
-                                                  'consultar',
+                                                  'Consultar',
                                                   style: TextStyle(
                                                     fontSize: 11,
                                                     color: colors.primary,

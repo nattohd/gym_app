@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gym_app/infrastructure/models/reservas_model.dart';
@@ -22,7 +23,27 @@ Future<dynamic> getCosas(String docID, String coleccion) async {
 }
 
 class ReservaProvider extends ChangeNotifier {
+  List<int> diasSemana = [];
+  late int diaActual;
   final ReservaRepository reservaRepository = ReservaRepository();
+
+  void calcDiasSemana() {
+    DateTime ahora = DateTime.now();
+    DateTime primerDiaDeLaSemana =
+        ahora.subtract(Duration(days: (ahora.weekday - 1)));
+    diasSemana.clear();
+    for (int i = 0; i < 7; i++) {
+      diasSemana.add(primerDiaDeLaSemana.add(Duration(days: i)).day);
+    }
+    notifyListeners();
+    getDiaActual();
+  }
+
+  void getDiaActual() {
+    DateTime ahora = DateTime.now();
+    diaActual = ahora.day;
+    notifyListeners();
+  }
 
   Stream<List<ReservaModel>> getListOfReservas(String uid) {
     return reservaRepository.getListOfReservas(uid);

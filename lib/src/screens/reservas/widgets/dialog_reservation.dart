@@ -354,7 +354,7 @@ class _DialogReservationState extends State<DialogReservation> {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  'assets/images/check.png',
+                                  'assets/images/check2.png',
                                   height: size.width * 0.25,
                                   width: size.width * 0.25,
                                   fit: BoxFit.cover,
@@ -428,7 +428,7 @@ class _DialogReservationState extends State<DialogReservation> {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  'assets/images/denied.png',
+                                  'assets/images/notaccess.png',
                                   height: size.width * 0.25,
                                   width: size.width * 0.25,
                                   fit: BoxFit.cover,
@@ -525,7 +525,7 @@ class _DialogReservationState extends State<DialogReservation> {
                                 children: [
                                   Center(
                                     child: Image.asset(
-                                      'assets/images/denied.png',
+                                      'assets/images/notaccess.png',
                                       height: size.width * 0.25,
                                       width: size.width * 0.25,
                                       fit: BoxFit.cover,
