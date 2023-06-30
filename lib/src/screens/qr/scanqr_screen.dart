@@ -1,12 +1,11 @@
 import 'dart:developer';
-import 'dart:html';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/src/providers/providers.dart';
-import 'package:provider/provider.dart';
+import 'package:gym_app/src/screens/reservas/widgets/texto_rico.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQRScreen extends StatefulWidget {
@@ -61,7 +60,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
             MediaQuery.of(context).size.height < 400)
         ? 150.0
         : 300.0;
-
+    scanArea = scanArea * 2;
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
@@ -95,16 +94,42 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
           showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Scaneado correctamente'),
+                    title: const Text('Escaneado correctamente'),
                     content: Container(
-                      height: 300,
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(child: Text('Renato Plaza')),
-                          Text('Hora Inicio: ${data.entrada}'),
-                          Text('Hora Termino: ${data.salida}'),
-                          Text('Bloque: ${data.bloque.toString()}'),
-                          Text(data.confirmadaToString()),
+                          Divider(),
+                          Center(
+                              child: Text(
+                            'RENATO ARTURO PLAZA DIAZ',
+                            // data.nameOfUser != null
+                            //     ? data.nameOfUser!
+                            //     : 'No se econtró alumno',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )),
+                          Divider(),
+                          TextoRico(nombre: 'Hora Inicio', valor: data.entrada),
+                          TextoRico(nombre: 'Hora Termino', valor: data.salida),
+                          TextoRico(
+                              nombre: 'Bloque', valor: data.bloque.toString()),
+                          Text(
+                            data.confirmadaToString(),
+                            style: TextStyle(color: Colors.green),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 25),
+                            height: 200,
+                            width: 200,
+                            child: Center(
+                              child: Image.asset(
+                                'assets/images/check2.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),

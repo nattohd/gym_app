@@ -45,19 +45,21 @@ class _QrGenerateScreenState extends State<QrGenerateScreen> {
                   final reserva = reservas[index];
 
                   return ListTile(
-                    title: Text(reserva.dia),
-                    subtitle: Text(
-                        'Hora Entrada: ${reserva.entrada}, Hora Salida: ${reserva.salida}'),
-                    onTap: () {
-                      showItemDetails(context, reserva);
-                    },
-                    trailing: Container(
-                        height: 80,
-                        width: 40,
-                        color: reserva.confirmada == false
-                            ? Colors.red
-                            : Colors.blue),
-                  );
+                      title: Text(reserva.dia),
+                      subtitle: Text(
+                          'Hora Entrada: ${reserva.entrada}, Hora Salida: ${reserva.salida}'),
+                      onTap: () {
+                        showItemDetails(context, reserva);
+                      },
+                      trailing: reserva.confirmada == false
+                          ? Image.asset(
+                              'assets/images/denied.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/images/check2.png',
+                              fit: BoxFit.cover,
+                            ));
                 },
               );
             }));
@@ -88,6 +90,7 @@ void showItemDetails(BuildContext context, ReservaModel reserva) {
             Text('Día: ${reserva.bloque}'),
             Text('Hora entrada: ${reserva.entrada}'),
             Text('Hora salida: ${reserva.salida}'),
+            Text(reserva.confirmadaToString()),
           ],
         ),
         actions: [
@@ -102,10 +105,3 @@ void showItemDetails(BuildContext context, ReservaModel reserva) {
     },
   );
 }
-
-List<Map<String, dynamic>> hours = [
-  {'day': 'Lunes', 'time': '9:35 AM', 'id': '1'},
-  {'day': 'Martes', 'time': '10:55 AM', 'id': '2'},
-  {'day': 'Miércoles', 'time': '12:15 AM', 'id': '3'},
-  {'day': 'Viernes', 'time': '2:30 PM', 'id': '4'},
-];
