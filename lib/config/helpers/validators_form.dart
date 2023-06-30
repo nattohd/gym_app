@@ -14,6 +14,10 @@ class ValidatorsForm {
         .hasMatch(value);
   }
 
+  static bool isValidRut(value) {
+    return RegExp(r'^(\d{1,3}(?:.\d{1,3}){2}-[\dkK])$').hasMatch(value);
+  }
+
   static bool isPasswordDefined(String value) {
     return value.isEmpty;
   }
