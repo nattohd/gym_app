@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/src/providers/providers.dart';
+import 'package:gym_app/src/screens/qr/widgets/empty_reservas.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -37,6 +38,11 @@ class _QrGenerateScreenState extends State<QrGenerateScreen> {
               if (!snapshot.hasData) CircularProgressIndicator();
 
               List<ReservaModel> reservas = snapshot.data ?? [];
+
+              if (reservas.isEmpty) {
+                return const Center(child: EmptyReservas());
+              }
+
               return ListView.separated(
                 itemCount: reservas.length,
                 separatorBuilder: (BuildContext context, int index) =>
