@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_app/infrastructure/models/reservas_model.dart';
+import 'package:gym_app/src/providers/providers.dart';
+import 'package:gym_app/src/screens/reservas/widgets/texto_rico.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQRScreen extends StatefulWidget {
@@ -13,10 +16,15 @@ class ScanQRScreen extends StatefulWidget {
 }
 
 class _ScanQRScreenState extends State<ScanQRScreen> {
+  ReservaProvider reservaProvider = ReservaProvider();
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
+  bool showed = false;
+  late String dia;
+  late String horaEntrada;
+  late String horaSalida;
+  late int bloque;
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -32,38 +40,27 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-        appBar: AppBar(),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: colors.primary,
-          foregroundColor: colors.surface,
-          onPressed: () => context.pop(),
-          child: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),
-        body: Column(
-          children: [
-            Container(
-              height: size.height * 0.7,
-              color: Colors.red,
-              child: _buildQrView(context),
-            ),
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-              ),
-            ),
-          ],
-        ));
+      appBar: AppBar(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: colors.primary,
+        foregroundColor: colors.surface,
+        onPressed: () => context.pop(),
+        child: const Icon(Icons.arrow_back_ios_new_rounded),
+      ),
+      body: SizedBox(
+        child: _buildQrView(context),
+      ),
+    );
   }
 
   Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 150.0
         : 300.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
+    scanArea = scanArea * 2;
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
@@ -77,13 +74,76 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
+  void _onQRViewCreated(
+    QRViewController controller,
+  ) {
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
+      setState(() async {
         result = scanData;
+
+        if (result != Barcode("", BarcodeFormat.aztec, []) && !showed) {
+          showed == true;
+          controller.pauseCamera();
+          ReservaModel data = await reservaProvider
+              .setConfirmarReservar(result!.code as String);
+
+          // ignore: use_build_context_synchronously
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Escaneado correctamente'),
+                    content: Container(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Divider(),
+                          Center(
+                              child: Text(
+                            'RENATO ARTURO PLAZA DIAZ',
+                            // data.nameOfUser != null
+                            //     ? data.nameOfUser!
+                            //     : 'No se econtró alumno',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )),
+                          Divider(),
+                          TextoRico(nombre: 'Hora Inicio', valor: data.entrada),
+                          TextoRico(nombre: 'Hora Termino', valor: data.salida),
+                          TextoRico(
+                              nombre: 'Bloque', valor: data.bloque.toString()),
+                          Text(
+                            data.confirmadaToString(),
+                            style: TextStyle(color: Colors.green),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 25),
+                            height: 200,
+                            width: 200,
+                            child: Center(
+                              child: Image.asset(
+                                'assets/images/check2.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('CERRAR'),
+                        onPressed: () {
+                          Navigator.pop(context, 'Cancel');
+                          controller.resumeCamera();
+                        },
+                      )
+                    ],
+                  ));
+        }
       });
     });
   }

@@ -1,9 +1,11 @@
+import 'package:gym_app/src/providers/providers.dart';
 import 'package:gym_app/src/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
-// GoRouter configuration
+UserProvider userProvider = UserProvider();
 final appRouter = GoRouter(
   // initialLocation: '/login',
+  refreshListenable: userProvider.status,
   routes: [
     GoRoute(
       path: '/',
@@ -29,5 +31,30 @@ final appRouter = GoRouter(
       path: '/horas',
       builder: (context, state) => const QrGenerateScreen(),
     ),
+    GoRoute(
+      path: '/test',
+      builder: (context, state) => const TestScreen(),
+    ),
   ],
+  redirect: (context, state) {
+    final isGoingTo = state.matchedLocation;
+    final authStatus = userProvider.status.value;
+
+    if (authStatus == AuthStatus.notAuthenticated) {
+      // if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+      if (isGoingTo == '/login') return null;
+
+      return '/login';
+    }
+
+    if (authStatus == AuthStatus.authenticated) {
+      if (isGoingTo == '/login')
+      // isGoingTo == '/register' ||
+      // isGoingTo == '/splash')
+      {
+        return '/';
+      }
+    }
+    return null;
+  },
 );

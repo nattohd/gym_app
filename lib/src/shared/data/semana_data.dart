@@ -1,3 +1,5 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 List<Map<String, dynamic>> hours = [
   {
     'entrada': '09:35 AM',
@@ -36,12 +38,48 @@ List<Map<String, dynamic>> hours = [
   },
 ];
 
-List<Map<String, dynamic>> reservation = [
+List<Map<String, dynamic>> validatorReservation = [
   {
-    'bloque': '1',
-    'horaEntrada': '09:35 AM',
-    'horaSalida': '10:45 AM',
-    'fechaReserva': '05/05',
-    'fechaActual': '12/06/2023'
+    'diaActual': 'Lunes',
+    'diaReserva': 'Martes',
+  },
+  {
+    'diaActual': 'Martes',
+    'diaReserva': 'Miercoles',
+  },
+  {
+    'diaActual': 'Miercoles',
+    'diaReserva': 'Jueves',
+  },
+  {
+    'diaActual': 'Jueves',
+    'diaReserva': 'Viernes',
+  },
+  {
+    'diaActual': 'Viernes',
+    'diaReserva': 'Sabado',
+  },
+  {
+    'diaActual': 'Sabado',
+    'diaReserva': 'Domingo',
+  },
+  {
+    'diaActual': 'Domingo',
+    'diaReserva': 'Lunes',
+  },
+];
+
+List<Map<String, dynamic>> optionesProposito = [
+  {
+    'tipoProposito': 'Clases Recuperativas',
+    'icono': const FaIcon(FontAwesomeIcons.arrowRotateLeft),
+  },
+  {
+    'tipoProposito': 'Entrenamiento',
+    'icono': const FaIcon(FontAwesomeIcons.dumbbell),
+  },
+  {
+    'tipoProposito': 'Clases Grupales',
+    'icono': const FaIcon(FontAwesomeIcons.personChalkboard),
   },
 ];

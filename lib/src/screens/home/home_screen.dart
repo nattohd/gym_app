@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gym_app/config/menu/menu_items.dart';
+import 'package:gym_app/config/menu/menu_items_home.dart';
 import 'package:gym_app/src/screens/home/widgets/menu_desplegable.dart';
 
 class HomeScreen extends StatelessWidget {

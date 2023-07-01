@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:gym_app/src/shared/data/semana_data.dart';
+import 'package:string_normalizer/string_normalizer.dart';
 
 List<dynamic> getDateWeek(int validator) {
   initializeDateFormatting('es', null);
@@ -31,13 +30,15 @@ List<dynamic> getDateWeek(int validator) {
     case 'Viernes':
       formatoSuma = [-4, -3, -2, -1, 0, 1, 2];
       break;
-    case 'Sabado':
+    case 'Sábado':
       formatoSuma = [-5, -4, -3, -2, -1, 0, 1];
       break;
     case 'Domingo':
       formatoSuma = [1, 2, 3, 4, 5, 6, 0];
       break;
   }
+
+  // el resultado: formatoSuma=[-5, -4, -3, -2, -1, 0, 1]
 
   List<dynamic> diaSemana = [
     ['Lu'],
@@ -48,15 +49,16 @@ List<dynamic> getDateWeek(int validator) {
     ['Sa'],
     ['Do']
   ];
-
   for (int i = 0; i < diaSemana.length; i++) {
     diaSemana[i].add((formatoSuma[i] + diaFix).toString());
   }
+  // el resultado: diaSemana =[[Lu, 12], [Ma, 13], [Mi, 14], [Ju, 15], [Vi, 16], [Sa, 17], [Do, 18]]
 
   if (validator == 1) {
     for (int i = 0; i < diaSemana.length; i++) {
       diaSemana[i][1] = "${diaSemana[i][1]} $fechaMesFormateado";
     }
+    //el resultado: diaSemana =[[Lu, 12 junio], [Ma, 13 junio], [Mi, 14 junio], [Ju, 15 junio], [Vi, 16 junio], [Sa, 17 junio], [Do, 18 junio]]
   }
 
   return diaSemana;
@@ -81,6 +83,41 @@ String processDay(int dia) {
     case 4:
       diaFinal = 'Viernes';
       break;
+    case 5:
+      diaFinal = 'Sabado';
+      break;
+    case 6:
+      diaFinal = 'Domingo';
+      break;
+  }
+  return diaFinal;
+}
+
+int processDayLetra(String dia) {
+  int diaFinal = 0;
+
+  switch (dia) {
+    case 'Lunes':
+      diaFinal = 0;
+      break;
+    case 'Martes':
+      diaFinal = 1;
+      break;
+    case 'Miercoles':
+      diaFinal = 2;
+      break;
+    case 'Jueves':
+      diaFinal = 3;
+      break;
+    case 'Viernes':
+      diaFinal = 4;
+      break;
+    case 'Sabado':
+      diaFinal = 5;
+      break;
+    case 'Domingo':
+      diaFinal = 6;
+      break;
   }
   return diaFinal;
 }
@@ -94,15 +131,61 @@ List<dynamic>? getHour(int bloques) {
       entradaSalida = [entrada, salida];
     }
   }).toList();
+
+  // el resultado es: entradaSalida = [09:35 AM, 10:45 AM]
   return entradaSalida;
 }
 
-String getDate() {
+List<String> getValidatorReservation() {
   initializeDateFormatting('es', null);
   DateTime fechaActual = DateTime.now();
-  String fechaNumFormateada =
+  String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
+  fechaDiaFormateada =
+      fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
+
+  fechaDiaFormateada = StringNormalizer.normalize(fechaDiaFormateada);
+  List<String> accessReservation = [];
+
+  validatorReservation.map((days) {
+    if (days['diaActual'] == fechaDiaFormateada) {
+      final String diaActual = days['diaActual'];
+      final String diaReserva = days['diaReserva'];
+      accessReservation = [diaActual, diaReserva];
+    }
+  }).toList();
+
+  //El resultado es: accessReservation = [Sabado, Domingo]
+  return accessReservation;
+}
+
+String deletAccent(String fechaDiaFormateada) {
+  fechaDiaFormateada = StringNormalizer.normalize(fechaDiaFormateada);
+  return fechaDiaFormateada;
+}
+
+String? getDate(String tipo) {
+  initializeDateFormatting('es', null);
+  DateTime fechaActual = DateTime.now();
+  String fechaCompletaFormateada =
       DateFormat('dd MMMM yyyy', 'es').format(fechaActual);
-  return fechaNumFormateada;
+  String fechaMesFormateada = DateFormat('MMMM', 'es').format(fechaActual);
+  String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
+  fechaDiaFormateada =
+      fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
+
+  if (tipo == 'dia') {
+    return fechaDiaFormateada;
+  } else {
+    if (tipo == 'mes') {
+      return fechaMesFormateada;
+    } else {
+      if (tipo == 'completo') {
+        return fechaCompletaFormateada;
+      }
+    }
+  }
+  //El resultado es: fechaCompletaFormateada =
+  return null;
 }
 
 String dateReservation(String diaReservaTest) {
@@ -118,29 +201,11 @@ String dateReservation(String diaReservaTest) {
   return fechaReserva;
 }
 
-void snackbar(BuildContext context, String texto, Color color) {
-  final snackBar = SnackBar(
-    content: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const FaIcon(
-          FontAwesomeIcons.check,
-          color: Colors.white,
-        ),
-        KeyedSubtree(
-          key: UniqueKey(),
-          child: Text(
-            texto,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const Text(''),
-      ],
-    ),
-    duration: const Duration(seconds: 2),
-    backgroundColor: color,
-  );
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-}
+
+
+
+// onPressed: () {
+//                         shouldSkipPage = false;
+//                         scrollToPage(2);
+                        
+//                       },

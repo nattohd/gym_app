@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_app/infrastructure/models/reservas_model.dart';
+import 'package:gym_app/src/providers/providers.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class QrGenerateScreen extends StatelessWidget {
+class QrGenerateScreen extends StatefulWidget {
   const QrGenerateScreen({super.key});
 
   @override
+  State<QrGenerateScreen> createState() => _QrGenerateScreenState();
+}
+
+class _QrGenerateScreenState extends State<QrGenerateScreen> {
+  @override
   Widget build(BuildContext context) {
+    final reservaProvider = context.watch<ReservaProvider>();
+    final userProvider = context.watch<UserProvider>();
+    print(userProvider.user!.uid);
+
     final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Entrada QR'),
@@ -18,28 +31,42 @@ class QrGenerateScreen extends StatelessWidget {
           onPressed: () => context.pop(),
           child: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
-        body: ListView.separated(
-          itemCount: hours.length,
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-          itemBuilder: (BuildContext context, int index) {
-            String day = hours[index]['day'];
-            String time = hours[index]['time'];
-            String id = hours[index]['id'];
+        body: StreamBuilder(
+            stream: reservaProvider.getListOfReservas(userProvider.user!.uid),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) CircularProgressIndicator();
 
-            return ListTile(
-              title: Text(day),
-              subtitle: Text('Hora: $time, ID: $id'),
-              onTap: () {
-                showItemDetails(context, day, time, id);
-              },
-            );
-          },
-        ));
+              List<ReservaModel> reservas = snapshot.data ?? [];
+              return ListView.separated(
+                itemCount: reservas.length,
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+                itemBuilder: (BuildContext context, int index) {
+                  final reserva = reservas[index];
+
+                  return ListTile(
+                      title: Text(reserva.dia),
+                      subtitle: Text(
+                          'Hora Entrada: ${reserva.entrada}, Hora Salida: ${reserva.salida}'),
+                      onTap: () {
+                        showItemDetails(context, reserva);
+                      },
+                      trailing: reserva.confirmada == false
+                          ? Image.asset(
+                              'assets/images/denied.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/images/check2.png',
+                              fit: BoxFit.cover,
+                            ));
+                },
+              );
+            }));
   }
 }
 
-void showItemDetails(BuildContext context, String day, String time, String id) {
+void showItemDetails(BuildContext context, ReservaModel reserva) {
   Size size = MediaQuery.of(context).size;
 
   showDialog(
@@ -55,11 +82,15 @@ void showItemDetails(BuildContext context, String day, String time, String id) {
               width: size.width,
               height: size.height * 0.3,
               child: QrImageView(
-                data: id,
+                data: reserva.idDoc!,
               ),
             ),
-            Text('Día: $day'),
-            Text('Hora: $time'),
+            Text('Día: ${reserva.dia}'),
+            Text('Motivo: ${reserva.motivo}'),
+            Text('Día: ${reserva.bloque}'),
+            Text('Hora entrada: ${reserva.entrada}'),
+            Text('Hora salida: ${reserva.salida}'),
+            Text(reserva.confirmadaToString()),
           ],
         ),
         actions: [
@@ -74,10 +105,3 @@ void showItemDetails(BuildContext context, String day, String time, String id) {
     },
   );
 }
-
-List<Map<String, dynamic>> hours = [
-  {'day': 'Lunes', 'time': '9:35 AM', 'id': '1'},
-  {'day': 'Martes', 'time': '10:55 AM', 'id': '2'},
-  {'day': 'Miércoles', 'time': '12:15 AM', 'id': '3'},
-  {'day': 'Viernes', 'time': '2:30 PM', 'id': '4'},
-];
