@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gym_app/infrastructure/models/reservas_model.dart';
 import 'package:gym_app/src/providers/providers.dart';
 import 'package:gym_app/src/screens/qr/widgets/empty_reservas.dart';
+import 'package:gym_app/src/screens/qr/widgets/text_pair.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -35,11 +36,12 @@ class _QrGenerateScreenState extends State<QrGenerateScreen> {
         body: StreamBuilder(
             stream: reservaProvider.getListOfReservas(userProvider.user!.uid),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) CircularProgressIndicator();
+              if (!snapshot.hasData) const CircularProgressIndicator();
 
               List<ReservaModel> reservas = snapshot.data ?? [];
 
-              if (reservas.isEmpty) {
+              if (reservas.isEmpty &&
+                  snapshot.connectionState != ConnectionState.waiting) {
                 return const Center(child: EmptyReservas());
               }
 
@@ -51,21 +53,41 @@ class _QrGenerateScreenState extends State<QrGenerateScreen> {
                   final reserva = reservas[index];
 
                   return ListTile(
-                      title: Text(reserva.dia),
-                      subtitle: Text(
-                          'Hora Entrada: ${reserva.entrada}, Hora Salida: ${reserva.salida}'),
-                      onTap: () {
-                        showItemDetails(context, reserva);
-                      },
-                      trailing: reserva.confirmada == false
-                          ? Image.asset(
-                              'assets/images/denied.png',
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset(
-                              'assets/images/check2.png',
-                              fit: BoxFit.cover,
-                            ));
+                    title: Text(
+                      reserva.fecha,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    hoverColor: colors.primary,
+                    splashColor: colors.primary.withOpacity(.3),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            'Hora Entrada: ${reserva.entrada} -  Bloque: ${reserva.bloque}'),
+                        Text('Hora Salida: ${reserva.salida}'),
+                      ],
+                    ),
+                    onTap: () {
+                      showItemDetails(context, reserva);
+                    },
+                    trailing: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 13, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: reserva.confirmada ? Colors.green : Colors.red,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        reserva.confirmadaToString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  );
                 },
               );
             }));
@@ -84,19 +106,24 @@ void showItemDetails(BuildContext context, ReservaModel reserva) {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: size.width,
-              height: size.height * 0.3,
-              child: QrImageView(
-                data: reserva.idDoc!,
+            Center(
+              child: SizedBox(
+                width: size.width,
+                height: size.height * 0.3,
+                child: QrImageView(
+                  size: size.width,
+                  data: reserva.idDoc!,
+                ),
               ),
             ),
-            Text('Día: ${reserva.dia}'),
-            Text('Motivo: ${reserva.motivo}'),
-            Text('Día: ${reserva.bloque}'),
-            Text('Hora entrada: ${reserva.entrada}'),
-            Text('Hora salida: ${reserva.salida}'),
-            Text(reserva.confirmadaToString()),
+            TextPair(title: 'Día:', content: reserva.dia),
+            TextPair(
+                title: 'Motivo:',
+                content: reserva.motivo == '' ? 'No definido' : reserva.motivo),
+            TextPair(title: 'Bloque:', content: reserva.bloque.toString()),
+            TextPair(title: 'Hora entrada:', content: reserva.entrada),
+            TextPair(title: 'Hora salida:', content: reserva.salida),
+            TextPair(title: 'Estado:', content: reserva.confirmadaToString()),
           ],
         ),
         actions: [

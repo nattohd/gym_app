@@ -58,17 +58,18 @@ class _TestScreenState extends State<TestScreen> {
           FilledButton(
             child: const Text('Crear reserva'),
             onPressed: () async {
+              DateTime now = DateTime.now();
               //Añadir dias
               final newReserva = ReservaModel(
-                bloque: 2,
+                bloque: 1,
                 confirmada: false,
-                dia: 'Viernes',
-                entrada: '10:55',
-                salida: '12:05',
+                dia: 'Miercoles',
+                entrada: '9:35',
+                salida: '10:45',
                 uid: userProvider.user!.uid,
                 motivo: 'Recuperativo',
                 fecha: '11/11/1111',
-                createdAt: '11/11/1111',
+                createdAt: now,
               );
               await reservaProvider.createNewReserva(newReserva);
             },

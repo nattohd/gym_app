@@ -6,47 +6,48 @@ class EmptyReservas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final textStyles = Theme.of(context).textTheme;
     return Column(
       children: [
         Center(
             child: Image.asset(
-          'assets/images/nothing.png',
-          fit: BoxFit.cover,
+          'assets/images/empty.png',
+          width: size.width * 0.8,
+          height: size.height * 0.3,
+          fit: BoxFit.contain,
         )),
-        Spacer(),
-        Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: ElevatedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.red),
-                ),
-              ),
-              elevation: MaterialStateProperty.all(10), //this adds shadow
-              overlayColor: MaterialStateProperty.all(
-                  Colors.grey[200]), //this adds highlight
-            ),
-            onPressed: () {
-              context.push('/reserve');
-            },
-            child: Text(
-              'Reserva tu hora aquí !',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: size.width * 0.68,
+          child: Text(
+            'Aun no haz hecho reservas, vuelve aqui cuando hayas reservado.',
+            style: textStyles.bodyLarge,
           ),
         ),
-        Spacer()
+        const SizedBox(height: 10),
+        SizedBox(
+          child: FilledButton.icon(
+            style: ButtonStyle(
+              shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              padding: MaterialStatePropertyAll(
+                EdgeInsets.symmetric(
+                  vertical: size.height * 0.010,
+                  horizontal: size.width * .2,
+                ),
+              ),
+            ),
+            onPressed: () async {
+              context.push('/reserve');
+            },
+            icon: const Text('Ir a reservar'),
+            label: const Icon(Icons.arrow_forward_ios_rounded),
+          ),
+        ),
       ],
     );
   }

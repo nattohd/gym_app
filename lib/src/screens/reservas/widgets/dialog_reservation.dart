@@ -228,6 +228,7 @@ class _DialogReservationState extends State<DialogReservation> {
                     width: size.width * 0.30,
                     child: FloatingActionButton(
                       onPressed: () async {
+                        DateTime now = DateTime.now();
                         scrollToPage(1);
                         //PARA MANGINI LOCO
                         // Lunes -> Indice de columna "0"
@@ -243,7 +244,7 @@ class _DialogReservationState extends State<DialogReservation> {
                           uid: userProvider.user!.uid,
                           motivo: motivoReserva,
                           fecha: '$diaReserva $fechaReserva',
-                          createdAt: fechaActual!,
+                          createdAt: now,
                         );
                         await reservaProvider.createNewReserva(newReserva);
                       },

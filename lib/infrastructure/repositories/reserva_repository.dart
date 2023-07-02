@@ -18,6 +18,7 @@ class ReservaRepository {
       return snapshot.docs.map((doc) {
         final data = doc.data();
         if (data != null) {
+          print(data);
           return ReservaModel.fromFirestore(data as Map<String, dynamic>)
             ..idDoc = doc.id;
         } else {
