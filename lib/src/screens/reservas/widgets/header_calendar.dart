@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/config/helpers/validators_date.dart';
+import 'package:gym_app/src/providers/reservas/reservas_provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class HeaderCalendar extends StatefulWidget {
   const HeaderCalendar({super.key});
@@ -26,6 +28,10 @@ class _HeaderCalendarState extends State<HeaderCalendar> {
 
     int validator = 2;
     List<dynamic> diasSemanas = getDateWeek(validator);
+
+    final reservaProvider = context.watch<ReservaProvider>();
+
+    List<int> diasSemanasNumero = reservaProvider.diasSemanaSoloNumero;
 
     return Column(
       children: [
@@ -63,6 +69,8 @@ class _HeaderCalendarState extends State<HeaderCalendar> {
               if (day[0] == 'Sa' || day[0] == 'Do') {
                 return Container();
               }
+              final index = diasSemanas.indexOf(day);
+              final numeroDia = diasSemanasNumero[index];
               return Container(
                 height: size.width * 0.245,
                 width: size.width * 0.85 / 5,
@@ -98,7 +106,7 @@ class _HeaderCalendarState extends State<HeaderCalendar> {
                               : null,
                         ),
                         Text(
-                          day[1],
+                          numeroDia.toString(),
                           style: TextStyle(
                               fontSize: 20,
                               color: day[1] == diaFix
