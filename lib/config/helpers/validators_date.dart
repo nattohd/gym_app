@@ -6,6 +6,8 @@ import 'package:string_normalizer/string_normalizer.dart';
 List<dynamic> getDateWeek(int validator) {
   initializeDateFormatting('es', null);
   DateTime fechaActual = DateTime.now();
+  //borrar
+  fechaActual = fechaActual.subtract(Duration(days: 5));
   String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
   fechaDiaFormateada =
       fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
@@ -139,6 +141,8 @@ List<dynamic>? getHour(int bloques) {
 List<String> getValidatorReservation() {
   initializeDateFormatting('es', null);
   DateTime fechaActual = DateTime.now();
+  //borrar
+  fechaActual = fechaActual.subtract(Duration(days: 5));
   String fechaDiaFormateada = DateFormat('EEEE', 'es').format(fechaActual);
   fechaDiaFormateada =
       fechaDiaFormateada[0].toUpperCase() + fechaDiaFormateada.substring(1);
