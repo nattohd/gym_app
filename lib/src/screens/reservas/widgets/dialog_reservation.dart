@@ -9,17 +9,20 @@ import 'package:gym_app/src/shared/data/semana_data.dart';
 
 class DialogReservation extends StatefulWidget {
   final int bloque, dia;
-  final String acceso;
+  final String acceso, idReserva;
 
   const DialogReservation(
       {super.key,
       required this.bloque,
       required this.dia,
-      required this.acceso});
+      required this.acceso,
+      required this.idReserva});
 
   @override
   State<DialogReservation> createState() => _DialogReservationState();
 }
+
+// widget.idReserva
 
 class _DialogReservationState extends State<DialogReservation> {
   @override
@@ -47,7 +50,7 @@ class _DialogReservationState extends State<DialogReservation> {
     PageController pageController = PageController(initialPage: 0);
     bool shouldSkipPage = true;
     List<String> accessReservation = getValidatorReservation();
-    String selectedOption = '';
+    String motivoReserva = '';
 
     void scrollToPage(int pageNumber) {
       pageController.animateToPage(
@@ -205,9 +208,8 @@ class _DialogReservationState extends State<DialogReservation> {
                               );
                             }).toList(),
                             onChanged: (value) {
-                              setState(() {
-                                selectedOption = value?['tipoProposito'];
-                              });
+                              motivoReserva = value?['tipoProposito'];
+                              setState(() {});
                             },
                           ),
                         )
@@ -219,7 +221,7 @@ class _DialogReservationState extends State<DialogReservation> {
                   TextButton(
                     child: const Text('Cerrar'),
                     onPressed: () {
-                      scrollToPage(1);
+                      Navigator.of(context).pop();
                     },
                   ),
                   SizedBox(
@@ -228,23 +230,24 @@ class _DialogReservationState extends State<DialogReservation> {
                     child: FloatingActionButton(
                       onPressed: () async {
                         shouldSkipPage = false;
-                        scrollToPage(2);
+                        scrollToPage(1);
                         //PARA MANGINI LOCO
                         // Lunes -> Indice de columna "0"
                         // Martes -> Indice de columna "1"
                         //Usa: reservasProvider.diasSemanaFechaCompleta[ indice de la columna ]
                         //Para obtener la fecha, en formato DateTime y solucionar el error. :)
-                        // final newReserva = ReservaModel(
-                        //   bloque: bloqueFinal,
-                        //   confirmada: false,
-                        //   dia: diaReserva,
-                        //   entrada: entradaBloque,
-                        //   salida: salidaBloque,
-                        //   uid: userProvider.user!.uid,
-                        //   motivo: selectedOption,
-                        //   fecha: fechaActual!,
-                        // );
-                        // await reservaProvider.createNewReserva(newReserva);
+                        final newReserva = ReservaModel(
+                          bloque: bloqueFinal,
+                          confirmada: false,
+                          dia: diaReserva,
+                          entrada: entradaBloque,
+                          salida: salidaBloque,
+                          uid: userProvider.user!.uid,
+                          motivo: motivoReserva,
+                          fecha: '$diaReserva $fechaReserva',
+                          createdAt: fechaActual!,
+                        );
+                        await reservaProvider.createNewReserva(newReserva);
                       },
                       backgroundColor: colors.primary,
                       child: const Text(
@@ -259,79 +262,6 @@ class _DialogReservationState extends State<DialogReservation> {
                 ],
               ),
               //final primera pagina
-
-              //inicio segunda pagina
-              if (shouldSkipPage)
-                AlertDialog(
-                  content: SingleChildScrollView(
-                    child: IntrinsicWidth(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: size.width * 0.45,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  offset: const Offset(1, 1),
-                                  blurRadius: 8,
-                                  spreadRadius: 10,
-                                ),
-                              ],
-                            ),
-                            child: Stack(
-                              children: [
-                                Center(
-                                  child: Image.asset(
-                                    'assets/images/close.png',
-                                    height: size.width * 0.25,
-                                    width: size.width * 0.25,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: size.width * 0.15,
-                            width: double.infinity,
-                            child: const Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Center(
-                                    child: Text(
-                                      'La reserva se cancelo con exito',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  actions: [
-                    Center(
-                      child: TextButton(
-                        child: const Text('Cerrar'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              //final segunda pagina
 
               //inicio tercera pagina
               AlertDialog(
@@ -670,7 +600,10 @@ class _DialogReservationState extends State<DialogReservation> {
                         height: size.width * 0.1,
                         width: size.width * 0.30,
                         child: FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            reservaProvider.deleteReserva(widget.idReserva);
+                            Navigator.of(context).pop();
+                          },
                           backgroundColor: colors.primary,
                           child: const Text(
                             'Confirmar',

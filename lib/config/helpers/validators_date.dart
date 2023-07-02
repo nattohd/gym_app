@@ -52,7 +52,7 @@ List<dynamic> getDateWeek(int validator) {
   for (int i = 0; i < diaSemana.length; i++) {
     diaSemana[i].add((formatoSuma[i] + diaFix).toString());
   }
-  // el resultado: diaSemana =[[Lu, 12], [Ma, 13], [Mi, 14], [Ju, 15], [Vi, 16], [Sa, 17], [Do, 18]]
+  // el resultado: diaSemana =[[Lu, 12]u, 1, [Ma, 13], [Mi, 14], [J5], [Vi, 16], [Sa, 17], [Do, 18]]
 
   if (validator == 1) {
     for (int i = 0; i < diaSemana.length; i++) {
@@ -200,12 +200,3 @@ String dateReservation(String diaReservaTest) {
   }
   return fechaReserva;
 }
-
-
-
-
-// onPressed: () {
-//                         shouldSkipPage = false;
-//                         scrollToPage(2);
-                        
-//                       },
