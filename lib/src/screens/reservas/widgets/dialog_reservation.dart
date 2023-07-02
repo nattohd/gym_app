@@ -48,7 +48,6 @@ class _DialogReservationState extends State<DialogReservation> {
     String? fechaActual = getDate(tipoDate);
     String fechaReserva = dateReservation(diaReservaTest);
     PageController pageController = PageController(initialPage: 0);
-    bool shouldSkipPage = true;
     List<String> accessReservation = getValidatorReservation();
     String motivoReserva = '';
 
