@@ -22,7 +22,7 @@ class BodyCalendar extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.only(left: 5),
                     width: size.width * .15,
-                    height: (parentHeight / 7),
+                    height: (parentHeight / 8),
                     child: Text(
                       hour['entrada'],
                       style: const TextStyle(

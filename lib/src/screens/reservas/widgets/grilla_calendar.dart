@@ -75,7 +75,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                         },
                         child: Container(
                           width: size.width * 0.85 / 5,
-                          height: size.height / 9.5,
+                          height: widget.heightGrilla,
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: colors.primary,
@@ -205,7 +205,7 @@ class _GrillaCalendarState extends State<GrillaCalendar> {
                             },
                             child: Container(
                               width: size.width * 0.85 / 5,
-                              height: size.height / 9.5,
+                              height: widget.heightGrilla,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: colors.primary,
