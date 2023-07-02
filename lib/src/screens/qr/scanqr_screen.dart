@@ -95,32 +95,31 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
               context: context,
               builder: (BuildContext context) => AlertDialog(
                     title: const Text('Escaneado correctamente'),
-                    content: Container(
+                    content: SizedBox(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Divider(),
+                          const Divider(),
                           Center(
                               child: Text(
-                            'RENATO ARTURO PLAZA DIAZ',
-                            // data.nameOfUser != null
-                            //     ? data.nameOfUser!
-                            //     : 'No se econtró alumno',
+                            data.nameOfUser != null
+                                ? data.nameOfUser!
+                                : 'No se econtró alumno',
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           )),
-                          Divider(),
+                          const Divider(),
                           TextoRico(nombre: 'Hora Inicio', valor: data.entrada),
                           TextoRico(nombre: 'Hora Termino', valor: data.salida),
                           TextoRico(
                               nombre: 'Bloque', valor: data.bloque.toString()),
                           Text(
                             data.confirmadaToString(),
-                            style: TextStyle(color: Colors.green),
+                            style: const TextStyle(color: Colors.green),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 25),
+                            padding: const EdgeInsets.only(left: 25),
                             height: 200,
                             width: 200,
                             child: Center(
