@@ -228,7 +228,6 @@ class _DialogReservationState extends State<DialogReservation> {
                     width: size.width * 0.30,
                     child: FloatingActionButton(
                       onPressed: () async {
-                        shouldSkipPage = false;
                         scrollToPage(1);
                         //PARA MANGINI LOCO
                         // Lunes -> Indice de columna "0"
