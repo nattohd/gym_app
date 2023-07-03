@@ -1,0 +1,46 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:gym_app/config/helpers/validators_form.dart';
+import 'package:gym_app/infrastructure/models/reservas_model.dart';
+import 'package:gym_app/infrastructure/repositories/auth_repository.dart';
+import 'package:gym_app/infrastructure/repositories/reserva_repository.dart';
+
+void main() {
+
+//Test aportados al Sprint 2  - 2/3 ⤵
+//Esta test pone aprueba que pasa si añadimos una reserva 
+  testWidgets('5 Test isCorrect data from firebase',
+      (WidgetTester tester) async {
+    //Se debe estar ejecutando la aplicacion para correr esto
+    ReservaRepository reservaRepository = ReservaRepository();
+    DateTime now = DateTime.now();
+    now.add(const Duration(days: 1));
+    DateTime fecha = DateTime(now.year, now.month, now.day);
+    final newReserva = ReservaModel(
+      bloque: 5,
+      confirmada: false,
+      dia: 'Lunes',
+      entrada: '10:55',
+      salida: '12:05',
+      uid: '0XWNnDnUFFYycI69fudR5Hyi8fa2',
+      motivo: 'Recuperativo',
+      fecha: fecha,
+      createdAt: now,
+    );
+
+    String mensaje = await reservaRepository.creteNewReserva(newReserva);
+    expect(mensaje == 'Reserva Creada correctamente', true);
+  });
+
+  //Test aportados al Sprint 2  - 3/3 ⤵
+  //Esta test pone aprueba si es correcta la peticion deobtener un perfil de cierto usuario
+  testWidgets('6 Test the Correct profile of user from firebase using uid',
+      (WidgetTester tester) async {
+    //Se debe estar ejecutando la aplicacion para correr esto
+    AuthRepository authRepository = AuthRepository();
+    final profile =
+        await authRepository.getUserProfile('0XWNnDnUFFYycI69fudR5Hyi8fa2');
+
+    expect(profile?['displayName'] == 'CRISTOBAL MATIAS HERRERA ROJAS (Alumno)',
+        true);
+  });
+}
